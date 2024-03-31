@@ -48,7 +48,7 @@ provider "proxmox" {
 
 
 module "dev" {
-  source           = "https://githubcom/alexrf45/tf-modules-resume.git//services/proxmox-vm-deploy?ref=V2.0.6.3"
+  source           = "https://githubcom/alexrf45/lab.git//proxmox-vm-deploy?ref=v0.0.1-alpha"
   vm_configs       = var.vm_configs
   scsihw           = var.scsihw
   description      = var.description
