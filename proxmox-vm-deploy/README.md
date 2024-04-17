@@ -4,10 +4,11 @@ https://github.com/Telmate/terraform-provider-proxmox/issues/901
 - Upgrading to 3.0 introduced alot of issues. This fixed it.
 
 ```hcl
-# These 3 vars are there so that cloud-init drive gets created
+# These 3 vars are present for the created cloud-init drive
   ciuser                  = "ciuser_name"
   cipassword              = "<some_password>"
   cloudinit_cdrom_storage = "local-lvm"
+
 # The following is for making sure that when the VM get's created it knows how to boot
   boot                    = "order=scsi0;ide3"
 ```
@@ -48,7 +49,7 @@ provider "proxmox" {
 
 
 module "dev" {
-  source           = "https://githubcom/alexrf45/lab.git//proxmox-vm-deploy?ref=v0.0.1-alpha"
+  source           = "https://github.com/alexrf45/tf-modules-resume.git//services/proxmox-vm-deploy?ref=dev"
   vm_configs       = var.vm_configs
   scsihw           = var.scsihw
   description      = var.description
