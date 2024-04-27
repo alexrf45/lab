@@ -6,7 +6,7 @@ output "website_bucket_name" {
 
 output "domain_name" {
   description = "Website endpoint"
-  value       = aws_s3_bucket_website_configuration.site.website_endpoint
+  value       = aws_s3_bucket_website_configuration.website_endpoint
 }
 
 
