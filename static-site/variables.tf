@@ -14,7 +14,7 @@ variable "resource_tags" {
   type        = map(any)
   default = {
     project     = "Blog"
-    environment = "r0land-sec.com"
+    environment = "dev"
     Name        = "Static Site"
   }
 }
