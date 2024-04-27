@@ -18,11 +18,12 @@ resource "cloudflare_record" "acm" {
 
 
 resource "cloudflare_record" "cname" {
-  depends_on = [aws_cloudfront_distribution.dist]
-  zone_id    = data.cloudflare_zones.domain.id
-  name       = var.site_domain
-  value      = aws_cloudfront_distribution.dist.domain_name
-  type       = "CNAME"
+  depends_on      = [aws_cloudfront_distribution.dist]
+  zone_id         = data.cloudflare_zones.domain.id
+  name            = var.site_domain
+  value           = aws_cloudfront_distribution.dist.domain_name
+  type            = "CNAME"
+  allow_overwrite = true
 }
 
 
