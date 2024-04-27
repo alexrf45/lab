@@ -9,7 +9,7 @@ resource "aws_acm_certificate" "cert" {
 }
 
 resource "aws_acm_certificate_validation" "validate" {
-  depends_on              = [aws_acm_certificate.cert]
+  depends_on              = [cloudflare_record.acm]
   certificate_arn         = aws_acm_certificate.cert.arn
   validation_record_fqdns = cloudflare_record.cname[*].hostname
   timeouts {
