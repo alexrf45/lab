@@ -54,6 +54,6 @@ resource "proxmox_vm_qemu" "vm" {
   cloudinit_cdrom_storage = var.storage_location
   boot                    = var.boot
   nameserver              = each.value.nameserver
-  sshkeys                 = tls_private_key.ssh-ed25519.public_key_openssh
+  sshkeys                 = tls_private_key.ssh_ed25519.public_key_openssh
 }
 
