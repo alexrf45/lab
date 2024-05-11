@@ -1,0 +1,5 @@
+bucket         = "BUCKET_NAME" #recommend different state buckets per environment
+region         = "REGION"
+dynamodb_table = "TABLE_NAME"
+encrypt        = true
+
