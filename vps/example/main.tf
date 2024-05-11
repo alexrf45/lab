@@ -26,12 +26,20 @@ terraform {
 
 
 module "vps" {
-  source = "git@github.com:alexrf45/lab.git//vps?ref=v0.0.1-alpha-1.0.9"
+  source = "git@github.com:alexrf45/lab.git//vps?ref=v0.0.1-alpha-1.0.11"
 
   region        = "us-west-2"
   instance_type = "t3a.medium"
-  ami           = "ami-064e72469327cafbf"
+  ami           = "ami-0cf2b4e024cdb6960"
   volume_size   = "50"
   username      = "fr3d"
   sg_name       = "vps_web"
+}
+
+
+resource "terraform_data" "ssh-deploy" {
+  depends_on = [module.vps]
+  provisioner "local-exec" {
+    command = "export IP=$(./ssh.sh)"
+  }
 }

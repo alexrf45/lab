@@ -2,27 +2,31 @@
 
 - A simple module for spinning up an EC2 instance for general use
 
-## Required providers
+- See example folder for module use
 
+- Module is built assuming deployment is initialized from local machine. Development for use on runners is not in the works at this time
 
-```
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "5.49.0"
+- Install script is still in testing. ensure install script is located in parent directory before deploying
+
+## Provider block:
+
+```hcl
+provider "aws" {
+  region = "us-west-2"
+  default_tags {
+    tags = {
+      Name      = "AWS Virtual Private Server"
+      Purpose   = "Virtual Private Server"
+      ManagedBy = "Terraform"
     }
   }
-    tls = {
-      source = "hashicorp/tls"
-      version = "4.0.5"
-    }
-  cloudinit = {
-      source  = "hashicorp/cloudinit"
-      version = "~> 2.3.3"
-    }
+}
+provider "tls" {
 
 }
 
+provider "cloudinit" {
 
+}
+```
 
