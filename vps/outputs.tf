@@ -8,3 +8,8 @@ output "vps_public_ip" {
   value       = aws_eip.eip.public_ip
 }
 
+output "ssh_key" {
+  description = "ssh private key for ssh access"
+  value       = tls_private_key.ssh_key.private_key_openssh
+}
+
