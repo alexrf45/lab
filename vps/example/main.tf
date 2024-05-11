@@ -26,7 +26,7 @@ terraform {
 
 
 module "vps" {
-  source = "git@github.com:alexrf45/lab.git//vps?ref=v0.0.1-alpha-1.0.11"
+  source = "git@github.com:alexrf45/lab.git//vps?ref=v0.0.1-alpha-vps-0.0.1"
 
   region        = "us-west-2"
   instance_type = "t3a.medium"
