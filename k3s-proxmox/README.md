@@ -49,14 +49,22 @@ provider "proxmox" {
 
 
 module "dev" {
-  source           = "https://github.com/alexrf45/tf-modules-resume.git//services/proxmox-vm-deploy?ref=dev"
-  vm_configs       = var.vm_configs
-  scsihw           = var.scsihw
-  description      = var.description
-  cpu_type         = var.cpu_type
-  boot_disk        = var.boot_disk
-  storage_location = var.storage_location
-  ciuser           = var.ciuser
-  cipassword       = var.cipassword
+  source               = "github.com/alexrf45/lab.git//k3s-promox"
+  etcd_count           = 2
+  etcd_size            = 25
+  etcd_memory          = 4096
+  control_plane_count  = 2
+  control_plane_memory = 4096
+  control_plane_size   = 25
+  node_count           = 3
+  node_memory          = 4096
+  node_size            = 25
+  scsihw               = "virtio-scsi-pci"
+  description          = "testing"
+  boot_disk            = "scsi0"
+  storage_location     = "local-lvm"
+  ciuser               = "k3s"
+  cipassword           = "password123"
 }
+
 ```
