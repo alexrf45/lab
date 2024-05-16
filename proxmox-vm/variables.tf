@@ -1,4 +1,10 @@
 
+variable "tags" {
+  description = "tags for vm"
+  type        = string
+  default     = "virtual machine"
+}
+
 variable "template" {
   description = "name of cloud init template to use"
   type        = list(string)
