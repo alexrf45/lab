@@ -23,6 +23,12 @@ variable "vm_count" {
   default     = 1
 }
 
+variable "vm_name" {
+  description = "naming convention of VMs"
+  type        = string
+  default     = "vm-00"
+}
+
 variable "nodes" {
   description = "pve nodes that vm will be deployed to"
   type        = list(string)

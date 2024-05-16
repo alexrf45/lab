@@ -11,7 +11,7 @@ resource "proxmox_vm_qemu" "vm" {
   count       = var.vm_count
   tags        = "virtual machine"
   vmid        = "200${count.index}"
-  name        = "vm-00${count.index + 1}"
+  name        = "${var.vm_name}${count.index + 1}"
   target_node = var.nodes[count.index]
   desc        = var.description
   onboot      = true
