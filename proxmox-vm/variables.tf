@@ -31,8 +31,7 @@ variable "vm_count" {
 
 variable "vm_name" {
   description = "naming convention of VMs"
-  type        = string
-  default     = "vm-00"
+  type        = list(string)
 }
 
 variable "nodes" {
