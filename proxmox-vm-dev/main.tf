@@ -38,7 +38,7 @@ resource "proxmox_vm_qemu" "vm" {
       }
     }
   }
-  ipconfig0               = "ip=${var.cidr}${count.index + 1}/24,gw=${var.nameserver}"
+  ipconfig0               = var.ipconfig
   ciuser                  = var.ciuser
   cipassword              = var.cipassword
   cloudinit_cdrom_storage = var.storage_location
