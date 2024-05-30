@@ -29,6 +29,11 @@ variable "vm_count" {
   default     = 1
 }
 
+variable "vm_id" {
+  description = "vm id"
+  type        = string
+}
+
 variable "vm_name" {
   description = "naming convention of VMs"
   type        = list(string)

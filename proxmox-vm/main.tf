@@ -10,7 +10,7 @@ resource "proxmox_vm_qemu" "vm" {
   }
   count       = var.vm_count
   tags        = var.tags
-  vmid        = "200${count.index}"
+  vmid        = "${var.vm_id}${count.index + 1}"
   name        = var.vm_name[count.index]
   target_node = var.nodes[count.index]
   desc        = var.description
