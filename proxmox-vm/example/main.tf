@@ -2,7 +2,7 @@ terraform {
   required_providers {
     proxmox = {
       source  = "Telmate/proxmox"
-      version = "3.0.1-rc1"
+      version = "3.0.1-rc2"
     }
     aws = {
       source  = "hashicorp/aws"
@@ -10,7 +10,7 @@ terraform {
     }
   }
 
-  #if desired. I highly recommend it. 
+  #if desired. I highly recommend it.
   backend "s3" {
 
   }
@@ -18,10 +18,11 @@ terraform {
 
 #insert your api key info below
 
+
 provider "proxmox" {
-  pm_api_url          = "https://10.X.X.X:8006/api2/json"
-  pm_api_token_id     = ""
-  pm_api_token_secret = ""
+  pm_api_url          = "https://192.168.101.10:8006/api2/json"
+  pm_api_token_id     = "tf-user@pve!terraform-provisioner"
+  pm_api_token_secret = "<api token>"
   pm_tls_insecure     = true
   pm_debug            = false
   pm_parallel         = 5
@@ -36,22 +37,37 @@ provider "proxmox" {
 # expand the template and node based desired count and distribution of VMs
 module "dev" {
   source           = "../"
-  vm_count         = 2
-  size             = 25
-  memory           = 4096
-  template         = ["h1-vm", "h2-vm"]
-  nodes            = ["home-1", "home-2"]
+  onboot           = true
+  template         = "ubuntu"
+  tags             = "testing"
   scsihw           = "virtio-scsi-pci"
   description      = "testing"
   boot_disk        = "scsi0"
   storage_location = "local-lvm"
-  cidr             = "10.3.3.3"
-  nameserver       = "10.3.3.1"
-  ciuser           = "k3s"
-  cipassword       = "password123"
+  nameserver       = "1.1.1.1"
+  ciuser           = "test-user"
+  cipassword       = "password"
+  ssh_key_path     = "~/.ssh/lab.pub"
+
+
+  vm_config = {
+    v1 = {
+      node    = "home-1",
+      vm_id   = "9900"
+      memory  = "4096",
+      size    = "25",
+      vm_name = "test-vm-1",
+      ip      = "192.168.101.110",
+    },
+    v2 = {
+      node    = "home-1",
+      vm_id   = "9901"
+      memory  = "4096",
+      size    = "25",
+      vm_name = "test-vm-2",
+      ip      = "192.168.101.111",
+    }
+  }
+
 }
 
-output "private-key" {
-  value     = module.dev.private-key
-  sensitive = true
-}

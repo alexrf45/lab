@@ -1,35 +1,17 @@
-https://github.com/Telmate/terraform-provider-proxmox/issues/901
-
-
-- Upgrading to 3.0 introduced alot of issues. This fixed it.
-
-```hcl
-# These 3 vars are present for the created cloud-init drive
-  ciuser                  = "ciuser_name"
-  cipassword              = "<some_password>"
-  cloudinit_cdrom_storage = "local-lvm"
-
-# The following is for making sure that when the VM get's created it knows how to boot
-  boot                    = "order=scsi0;ide3"
 ```
-
-
 ## Example main.tf using an s3 backend: **Please ensure to set the remote.tfbackend to the appropriate bucket, table and unique key**
 ```
 terraform {
   required_providers {
     proxmox = {
       source  = "Telmate/proxmox"
-      version = "3.0.1-rc1"
+      version = "3.0.1-rc2"
     }
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
-  }
-
-  backend "s3" {
-
+    backend "s3" {}
   }
 }
 
@@ -48,26 +30,41 @@ provider "proxmox" {
 }
 
 
+# add additional config blocks for additional vms.
 module "dev" {
   source           = "../"
-  vm_count         = 2
-  size             = 25
-  memory           = 4096
-  template         = ["h1-vm", "h2-vm"]
-  nodes            = ["home-1", "home-2"]
+  onboot           = true
+  template         = "ubuntu"
+  tags             = "testing"
   scsihw           = "virtio-scsi-pci"
   description      = "testing"
   boot_disk        = "scsi0"
   storage_location = "local-lvm"
-  cidr             = "10.3.3.3"
-  nameserver       = "10.3.3.1"
-  ciuser           = "k3s"
-  cipassword       = "password123"
-}
+  nameserver       = "1.1.1.1"
+  ciuser           = "test-user"
+  cipassword       = "password"
+  ssh_key_path     = "~/.ssh/lab.pub"
 
-output "private-key" {
-  value     = module.dev.private-key
-  sensitive = true
+
+  vm_config = {
+    v1 = {
+      node    = "home-1",
+      vm_id   = "9900"
+      memory  = "4096",
+      size    = "25",
+      vm_name = "test-vm-1",
+      ip      = "192.168.101.110",
+    },
+    v2 = {
+      node    = "home-1",
+      vm_id   = "9901"
+      memory  = "4096",
+      size    = "25",
+      vm_name = "test-vm-2",
+      ip      = "192.168.101.111",
+    }
+  }
+
 }
 
 ```

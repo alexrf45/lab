@@ -12,9 +12,29 @@ https://github.com/Telmate/terraform-provider-proxmox/issues/901
 # The following is for making sure that when the VM get's created it knows how to boot
   boot                    = "order=scsi0;ide3"
 ```
+```
+terraform {
+  required_providers {
+    proxmox = {
+      source  = "Telmate/proxmox"
+      version = "3.0.1-rc1"
+    }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+
+    tls = {
+      source  = "hashicorp/tls"
+      version = "4.0.5"
+    }
+  }
+}
+```
 
 
-## Example main.tf using an s3 backend: 
+
+## Example main.tf using an s3 backend: **Please ensure to set the remote.tfbackend to the appropriate bucket, table and unique key**
 ```
 terraform {
   required_providers {
@@ -49,22 +69,25 @@ provider "proxmox" {
 
 
 module "dev" {
-  source               = "github.com/alexrf45/lab.git//k3s-promox"
-  etcd_count           = 2
-  etcd_size            = 25
-  etcd_memory          = 4096
-  control_plane_count  = 2
-  control_plane_memory = 4096
-  control_plane_size   = 25
-  node_count           = 3
-  node_memory          = 4096
-  node_size            = 25
-  scsihw               = "virtio-scsi-pci"
-  description          = "testing"
-  boot_disk            = "scsi0"
-  storage_location     = "local-lvm"
-  ciuser               = "k3s"
-  cipassword           = "password123"
+  source           = "../"
+  vm_count         = 2
+  size             = 25
+  memory           = 4096
+  template         = ["h1-vm", "h2-vm"]
+  nodes            = ["home-1", "home-2"]
+  scsihw           = "virtio-scsi-pci"
+  description      = "testing"
+  boot_disk        = "scsi0"
+  storage_location = "local-lvm"
+  cidr             = "10.3.3.3"
+  nameserver       = "10.3.3.1"
+  ciuser           = "k3s"
+  cipassword       = "password123"
+}
+
+output "private-key" {
+  value     = module.dev.private-key
+  sensitive = true
 }
 
 ```

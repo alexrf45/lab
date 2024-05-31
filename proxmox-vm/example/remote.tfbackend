@@ -1,5 +1,5 @@
-bucket = "dev-state-bucket"
-region = "us-east-1"
-dynamodb_table = "dev-tf-locks"
+bucket = "<BUCKET NAME>"
+region = "us-west-2"
+dynamodb_table = "<TABLE ARN>"
 encrypt = true
-key = "state/dev/terraform.tfstate"
+key = "state/dev/remote.tfstate"
