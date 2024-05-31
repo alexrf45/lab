@@ -1,6 +1,6 @@
 resource "proxmox_vm_qemu" "cloudinit-k3s-node" {
   count       = var.node_count
-  vmid        = "300${count.index + 1}"
+  vmid        = var.node_id[count.index]
   target_node = var.node_nodes[count.index]
   tags        = "control_plane"
   desc        = "k3s node"
@@ -24,7 +24,7 @@ resource "proxmox_vm_qemu" "cloudinit-k3s-node" {
     ide {
       ide3 {
         cloudinit {
-          storage = "local-lvm"
+          storage = var.storage_location
         }
       }
     }
@@ -49,6 +49,10 @@ resource "proxmox_vm_qemu" "cloudinit-k3s-node" {
 
 ####### VARIABLES ########
 
+variable "node_id" {
+  description = "vm id"
+  type        = list(string)
+}
 
 
 variable "node_count" {

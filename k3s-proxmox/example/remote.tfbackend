@@ -1,0 +1,5 @@
+bucket = "<BUCKET NAME>"
+region = "us-west-2"
+dynamodb_table = "<TABLE ARN>"
+encrypt = true
+key = "state/dev/remote.tfstate"

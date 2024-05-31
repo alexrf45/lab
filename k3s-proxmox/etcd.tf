@@ -1,5 +1,5 @@
 resource "proxmox_vm_qemu" "cloudinit-k3s-ext-etcd" {
-  vmid        = "1001"
+  vmid        = var.etcd_id
   tags        = "etcd"
   target_node = var.etcd_node
   desc        = "etcd"
@@ -23,7 +23,7 @@ resource "proxmox_vm_qemu" "cloudinit-k3s-ext-etcd" {
     ide {
       ide3 {
         cloudinit {
-          storage = "local-lvm"
+          storage = var.storage_location
         }
       }
     }
@@ -53,6 +53,11 @@ variable "etcd_node" {
   default     = "home-1"
 }
 
+variable "etcd_id" {
+  description = "etcd vm id"
+  type        = string
+  default     = "1001"
+}
 
 variable "etcd_template" {
   description = "template to use for vm"

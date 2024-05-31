@@ -1,6 +1,6 @@
 resource "proxmox_vm_qemu" "cloudinit-k3s-control-plane" {
   count       = var.control_plane_count
-  vmid        = "200${count.index + 1}"
+  vmid        = var.control_plane_id[count.index]
   target_node = var.control_plane_node[count.index]
   desc        = "control_plane"
   tags        = "control_plane"
@@ -24,7 +24,7 @@ resource "proxmox_vm_qemu" "cloudinit-k3s-control-plane" {
     ide {
       ide3 {
         cloudinit {
-          storage = "local-lvm"
+          storage = var.storage_location
         }
       }
     }
@@ -52,6 +52,11 @@ variable "control_plane_count" {
   description = "number of VMs to deploy"
   type        = number
   default     = 1
+}
+
+variable "control_plane_id" {
+  description = "vm id"
+  type        = list(string)
 }
 
 variable "control_plane_node" {
