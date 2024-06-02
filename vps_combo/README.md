@@ -4,7 +4,7 @@
 A simple vps using aws for terraform backend, hetzner cloud for infra and cloudflare for dns
 
 
-## Provider
+## Required Providers
 
 ```
 terraform {
@@ -33,3 +33,9 @@ terraform {
   }
 }
 ```
+
+- The vps uses cloudinit to bootstrap a debian 12 vm with a custom username, ssh key and installation of docker, vim, git, wget and curl for further configuration
+
+- Install script is seated in the module so any changes to the script require a change to the module as of now
+
+- utilize secure credential storage for sensitive values such as api keys required for cloudflare and hetzner
