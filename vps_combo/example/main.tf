@@ -26,7 +26,7 @@ terraform {
 
 
 module "vps" {
-  source       = "github.com/alexrf45/lab.git//vps_combo?ref=vps"
+  source       = "github.com/alexrf45/lab.git//vps_combo?ref=vps_dev"
   hcloud_token = ""
   username     = ""
   api_token    = ""
