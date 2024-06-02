@@ -1,4 +1,7 @@
-
+variable "vm_config" {
+  description = "vm variables"
+  type        = map(any)
+}
 variable "tags" {
   description = "tags for vm"
   type        = string
@@ -6,49 +9,31 @@ variable "tags" {
 }
 
 variable "template" {
-  description = "name of cloud init template to use"
-  type        = list(string)
-}
-
-
-variable "size" {
-  description = "vm size for etcd"
-  type        = number
-  default     = 30
-
-}
-
-variable "memory" {
-  description = "VM memory"
-  type        = number
-  default     = 2048
-}
-variable "vm_count" {
-  description = "number of VMs to deploy"
-  type        = number
-  default     = 1
-}
-
-variable "vm_id" {
-  description = "vm id"
+  description = "clound init template name"
   type        = string
+  default     = "ubuntu"
 }
-
-variable "vm_name" {
-  description = "naming convention of VMs"
-  type        = list(string)
+variable "onboot" {
+  description = "whether to have the vm power on after creation"
+  type        = bool
+  default     = true
 }
-
-variable "nodes" {
-  description = "pve nodes that vm will be deployed to"
-  type        = list(string)
-}
-
-
 variable "description" {
   description = "description of resource"
   type        = string
   default     = "resource"
+}
+
+variable "numa" {
+  description = "not sure what it does"
+  type        = bool
+  default     = true
+}
+
+variable "vcpu" {
+  description = "number of virtual cpus"
+  type        = number
+  default     = 1
 }
 
 variable "cores" {
@@ -94,11 +79,6 @@ variable "replicate" {
   default     = true
 }
 
-variable "cidr" {
-  description = "CIDR for assigning cloud init IP addresses to the vms"
-  type        = string
-  default     = "10.3.3.3"
-}
 
 variable "nameserver" {
   description = "dns nameserver"
@@ -119,6 +99,12 @@ variable "cipassword" {
   default     = "password1234"
 }
 
+
+variable "ssh_key_path" {
+  description = "file path of ssh public key"
+  type        = string
+  default     = "$HOME/.ssh/lab.pub"
+}
 variable "boot" {
   description = "boot order"
   type        = string
