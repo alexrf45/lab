@@ -43,6 +43,8 @@ module "dev" {
   scsihw           = "virtio-scsi-pci"
   description      = "testing"
   boot_disk        = "scsi0"
+  bios             = "seabios"
+  agent            = 1
   storage_location = "local-lvm"
   nameserver       = "1.1.1.1"
   ciuser           = "test-user"
