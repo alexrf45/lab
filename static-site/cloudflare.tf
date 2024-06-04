@@ -12,9 +12,9 @@ resource "cloudflare_record" "acm" {
   depends_on = [aws_acm_certificate.cert]
 
   zone_id         = data.cloudflare_zones.domain.zones[0].id
-  name            = replace(tolist(aws_acm_certificate.cert.domain_validation_options)[0].resource_record_name, ".${local.root_domain}.", "")
-  value           = trimsuffix(tolist(aws_acm_certificate.cert.domain_validation_options)[0].resource_record_value, ".")
-  type            = tolist(aws_acm_certificate.cert.domain_validation_options)[0].resource_record_type
+  name            = replace(tolist(module.certs.domain_validation_options)[0].resource_record_name, ".${local.root_domain}.", "")
+  value           = trimsuffix(tolist(module.certs.domain_validation_options)[0].resource_record_value, ".")
+  type            = tolist(module.certs.domain_validation_options)[0].resource_record_type
   ttl             = 60
   proxied         = false
   allow_overwrite = false

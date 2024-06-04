@@ -1,19 +1,16 @@
-resource "aws_acm_certificate" "cert" {
-  domain_name       = var.site_domain
-  validation_method = "DNS"
-  #subject_alternative_names = ["www.${var.site_domain}"]
-  tags = var.resource_tags
-
-
-  lifecycle {
-    create_before_destroy = true
+module "certs" {
+  providers = {
+    aws = aws.east
   }
+  source        = "./certs/"
+  site_domain   = var.site_domain
+  resource_tags = var.resource_tags
 }
 
 resource "aws_acm_certificate_validation" "validate" {
   depends_on              = [cloudflare_record.acm]
-  certificate_arn         = aws_acm_certificate.cert.arn
-  validation_record_fqdns = [tolist(aws_acm_certificate.cert.domain_validation_options)[0].resource_record_name]
+  certificate_arn         = module.certs.arn
+  validation_record_fqdns = [tolist(module.certs.domain_validation_options)[0].resource_record_name]
   timeouts {
     create = "8m"
 
@@ -39,9 +36,6 @@ resource "aws_cloudfront_distribution" "dist" {
       origin_protocol_policy = "http-only"
       origin_ssl_protocols   = ["TLSv1.2"]
     }
-    #s3_origin_config {
-    #  origin_access_identity = aws_cloudfront_origin_access_identity.site.cloudfront_access_identity_path
-    #}
   }
 
   enabled             = true
@@ -74,7 +68,7 @@ resource "aws_cloudfront_distribution" "dist" {
     }
   }
   viewer_certificate {
-    acm_certificate_arn            = aws_acm_certificate.cert.arn
+    acm_certificate_arn            = module.certs.arn
     cloudfront_default_certificate = false
     minimum_protocol_version       = "TLSv1.2_2021"
     ssl_support_method             = "sni-only"
