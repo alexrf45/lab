@@ -1,8 +1,9 @@
 terraform {
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
-      version = "5.46.0"
+      source                = "hashicorp/aws"
+      version               = "5.46.0"
+      configuration_aliases = [aws.west, aws.east]
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
