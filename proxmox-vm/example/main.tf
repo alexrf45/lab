@@ -38,8 +38,6 @@ provider "proxmox" {
 module "dev" {
   source           = "../"
   onboot           = true
-  template         = "ubuntu"
-  tags             = "testing"
   scsihw           = "virtio-scsi-pci"
   description      = "testing"
   boot_disk        = "scsi0"
@@ -54,20 +52,24 @@ module "dev" {
 
   vm_config = {
     v1 = {
-      node    = "home-1",
-      vm_id   = "9900"
-      memory  = "4096",
-      size    = "25",
-      vm_name = "test-vm-1",
-      ip      = "192.168.101.110",
+      node     = "home-1",
+      template = "ubuntu",
+      tags     = "db1"
+      vm_id    = "9900"
+      memory   = "4096",
+      size     = "25",
+      vm_name  = "test-vm-1",
+      ip       = "192.168.101.110",
     },
     v2 = {
-      node    = "home-1",
-      vm_id   = "9901"
-      memory  = "4096",
-      size    = "25",
-      vm_name = "test-vm-2",
-      ip      = "192.168.101.111",
+      node     = "home-1",
+      template = "ubuntu-cloud-init",
+      tags     = "db2"
+      vm_id    = "9901"
+      memory   = "4096",
+      size     = "25",
+      vm_name  = "test-vm-2",
+      ip       = "192.168.101.111",
     }
   }
 
