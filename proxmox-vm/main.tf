@@ -4,11 +4,11 @@ resource "proxmox_vm_qemu" "vm" {
   name        = each.value.vm_name
   target_node = each.value.node
   memory      = each.value.memory
-  tags        = var.tags
+  tags        = each.value.tags
   desc        = var.description
   onboot      = var.onboot
   bios        = var.bios
-  clone       = var.template
+  clone       = each.value.template
   numa        = var.numa
   agent       = var.agent
   os_type     = var.os_type

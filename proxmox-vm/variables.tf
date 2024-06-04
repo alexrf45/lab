@@ -2,17 +2,8 @@ variable "vm_config" {
   description = "vm variables"
   type        = map(any)
 }
-variable "tags" {
-  description = "tags for vm"
-  type        = string
-  default     = "virtual machine"
-}
 
-variable "template" {
-  description = "clound init template name"
-  type        = string
-  default     = "ubuntu"
-}
+
 variable "onboot" {
   description = "whether to have the vm power on after creation"
   type        = bool
