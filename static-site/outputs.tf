@@ -10,7 +10,6 @@ output "domain_name" {
 }
 
 
-
 output "validation" {
   description = "A list of attributes to feed into other resources to complete certificate validation. Can have more than one element, e.g. if SANs are defined. Only set if DNS-validation was used."
   value       = flatten(module.certs.validation)
