@@ -1,9 +1,27 @@
-variable "aws_region" {
+
+variable "env" {
+  description = "code/app environement"
   type        = string
-  description = "The AWS region to put the bucket into"
-  default     = "us-east-1"
+  validation {
+    condition = anytrue([
+      var.env == "dev",
+      var.env == "stage",
+      var.env == "prod",
+      var.env == "testing"
+    ])
+    error_message = "Please use one of the approved environement names: dev, stage, prod, testing"
+  }
 }
 
+variable "app" {
+  description = "app or project name"
+  type        = string
+  default     = ""
+  validation {
+    condition     = length(var.app) > 4
+    error_message = "app name must be at least 4 characters"
+  }
+}
 variable "site_domain" {
   type        = string
   description = "The domain name to use for the static site"
