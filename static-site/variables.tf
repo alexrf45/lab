@@ -22,6 +22,13 @@ variable "app" {
     error_message = "app name must be at least 4 characters"
   }
 }
+
+variable "aws_region" {
+  type = string
+}
+variable "aws_region_2" {
+  type = string
+}
 variable "site_domain" {
   type        = string
   description = "The domain name to use for the static site"
