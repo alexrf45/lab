@@ -10,7 +10,7 @@ module "certs" {
 resource "aws_acm_certificate_validation" "validate" {
   depends_on              = [cloudflare_record.acm]
   certificate_arn         = module.certs.arn
-  validation_record_fqdns = [tolist(module.certs.domain_validation_options)[0].resource_record_name]
+  validation_record_fqdns = [tolist(module.certs.validation)[0].resource_record_name]
   timeouts {
     create = "8m"
 
