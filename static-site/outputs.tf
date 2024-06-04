@@ -10,8 +10,13 @@ output "domain_name" {
 }
 
 
-
-output "acm_certificate_domain_validation_options" {
+output "validation" {
   description = "A list of attributes to feed into other resources to complete certificate validation. Can have more than one element, e.g. if SANs are defined. Only set if DNS-validation was used."
-  value       = flatten(aws_acm_certificate.cert.domain_validation_options)
+  value       = flatten(module.certs.validation)
 }
+
+output "arn" {
+  value = module.certs.arn
+}
+
+

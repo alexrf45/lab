@@ -1,5 +1,9 @@
+resource "random_uuid" "test" {
+}
+
+
 resource "aws_s3_bucket" "site" {
-  bucket = var.site_domain
+  bucket = "${var.env}-${var.app}-${var.site_domain}-${random_uuid.test.result}"
   tags   = var.resource_tags
 }
 
