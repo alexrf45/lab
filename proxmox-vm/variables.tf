@@ -18,6 +18,18 @@ variable "onboot" {
   type        = bool
   default     = true
 }
+
+variable "agent" {
+  description = "enable qemu agent"
+  type        = number
+  default     = 0
+}
+
+variable "bios" {
+  description = "enable bios or efi"
+  type        = string
+  default     = "seabios"
+}
 variable "description" {
   description = "description of resource"
   type        = string

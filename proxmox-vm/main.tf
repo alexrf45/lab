@@ -7,8 +7,10 @@ resource "proxmox_vm_qemu" "vm" {
   tags        = var.tags
   desc        = var.description
   onboot      = var.onboot
+  bios        = var.bios
   clone       = var.template
   numa        = var.numa
+  agent       = var.agent
   os_type     = var.os_type
   cores       = var.cores
   vcpus       = var.vcpu
