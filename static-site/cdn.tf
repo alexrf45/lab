@@ -1,6 +1,6 @@
 module "certs" {
   providers = {
-    aws = aws.use1
+    aws = aws.east
   }
   source        = "./certs/"
   site_domain   = var.site_domain
