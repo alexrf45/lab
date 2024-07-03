@@ -1,5 +1,6 @@
-```
 ## Example main.tf using an s3 backend: **Please ensure to set the remote.tfbackend to the appropriate bucket, table and unique key**
+
+
 ```
 terraform {
   required_providers {
@@ -29,8 +30,10 @@ provider "proxmox" {
   }
 }
 
+```
 
 # add additional config blocks for additional vms.
+```
 module "dev" {
   source           = "../"
   onboot           = true
