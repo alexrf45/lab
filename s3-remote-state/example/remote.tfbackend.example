@@ -1,0 +1,5 @@
+bucket = <BUCKET>
+region = "us-west-2"
+dynamodb_table = <TABLE NAME>
+encrypt = true
+key = <KEY>

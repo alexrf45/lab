@@ -15,7 +15,6 @@ variable "env" {
 variable "app" {
   description = "app or project name"
   type        = string
-  default     = ""
   validation {
     condition     = length(var.app) > 4
     error_message = "app name must be at least 4 characters"
