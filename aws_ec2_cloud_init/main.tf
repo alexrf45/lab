@@ -22,7 +22,6 @@ data "cloudinit_config" "test" {
   part {
     content_type = "text/cloud-config"
     content = yamlencode({
-      #      ssh_authorized_keys = [chomp(file("/tmp/key.pub"))] # this pubkey applies to the default (ec2-user, etc...) user which may or may not be created
       users = [
         #        "default", # when commented, default user (ec2-user, etc...) will not be created
         {
