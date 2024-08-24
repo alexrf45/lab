@@ -94,7 +94,7 @@ resource "kubernetes_deployment" "cloudflared" {
       }
       spec {
         node_selector = {
-          "node" = "worker"
+          "tier" = "prod"
         }
         container {
           image = "cloudflare/cloudflared:latest"
