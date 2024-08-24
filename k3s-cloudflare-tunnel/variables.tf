@@ -17,8 +17,8 @@ variable "app" {
   type        = string
   default     = ""
   validation {
-    condition     = length(var.app) > 4
-    error_message = "app name must be at least 4 characters"
+    condition     = length(var.app) > 2
+    error_message = "app name must be at least 2 characters"
   }
 }
 
