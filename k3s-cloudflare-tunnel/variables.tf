@@ -16,10 +16,10 @@ variable "app" {
   description = "app or project name"
   type        = string
   default     = ""
-  validation {
-    condition     = length(var.app) > 2
-    error_message = "app name must be at least 2 characters"
-  }
+  # validation {
+  #   condition     = length(var.app) > 2
+  #   error_message = "app name must be at least 2 characters"
+  # }
 }
 
 variable "site_domain" {
