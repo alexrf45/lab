@@ -33,6 +33,10 @@ variable "site_domain" {
   type        = string
   description = "The domain name to use for the static site"
 }
+variable "subdomain" {
+  type = string
+  description = "Subdomain for the site"
+}
 
 variable "resource_tags" {
   description = "Tags to set for all resources"
