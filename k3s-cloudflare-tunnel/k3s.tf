@@ -3,20 +3,25 @@ provider "kubernetes" {
 }
 
 
-resource "kubernetes_namespace" "cloudflare" {
+# resource "kubernetes_namespace" "cloudflare" {
+#   metadata {
+#     name = var.app
+#     labels = {
+#       "app" = var.app
+#     }
+#   }
+# }
+data "kubernetes_namespace" "namespace" {
   metadata {
     name = var.app
-    labels = {
-      "app" = var.app
-    }
   }
 }
 
-
 resource "kubernetes_config_map" "config" {
   metadata {
-    name      = "config"
-    namespace = kubernetes_namespace.cloudflare.metadata[0].name
+    name = "cf-config"
+    #namespace = kubernetes_namespace.cloudflare.metadata[0].name
+    namespace = data.kubernetes_namespace.namespace.metadata[0].name
     labels = {
       "app"  = var.app
       "tier" = var.env
@@ -40,7 +45,7 @@ EOF
 resource "kubernetes_secret" "creds" {
   metadata {
     name      = "creds"
-    namespace = kubernetes_namespace.cloudflare.metadata[0].name
+    namespace = data.kubernetes_namespace.namespace.metadata[0].name
     labels = {
       "app"  = var.app
       "tier" = var.env
@@ -64,7 +69,7 @@ resource "kubernetes_deployment" "cloudflared" {
   }
   metadata {
     name      = "cloudflared"
-    namespace = kubernetes_namespace.cloudflare.metadata[0].name
+    namespace = data.kubernetes_namespace.namespace.metadata[0].name
     labels = {
       app  = var.app
       tier = var.env
@@ -89,7 +94,7 @@ resource "kubernetes_deployment" "cloudflared" {
       }
       spec {
         node_selector = {
-          "node" = "worker"
+          "tier" = "prod"
         }
         container {
           image = "cloudflare/cloudflared:latest"
