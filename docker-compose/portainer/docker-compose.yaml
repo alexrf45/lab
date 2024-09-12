@@ -1,0 +1,15 @@
+name: home
+services:
+    portainer-ce:
+        ports:
+            - 9443:9443
+        container_name: portainer
+        restart: unless-stopped
+        volumes:
+            - data:/data
+            - /var/run/docker.sock:/var/run/docker.sock
+        image: portainer/portainer-ce:latest
+volumes:
+    data:
+        external: true
+        name: data
