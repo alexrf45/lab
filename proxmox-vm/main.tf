@@ -22,7 +22,7 @@ resource "proxmox_vm_qemu" "vm" {
     ide {
       ide3 {
         cloudinit {
-          storage = var.storage_location
+          storage = each.value.storage_location
         }
       }
     }
