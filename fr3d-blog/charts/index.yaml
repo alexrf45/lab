@@ -10,6 +10,6 @@ entries:
     name: fr3d-blog
     type: application
     urls:
-    - git@github.com:alexrf45/dev-argo/charts/fr3d-blog-0.1.0.tgz
+    - https://github.com/alexrf45/lab/fr3d-blog/charts/fr3d-blog-0.1.0.tgz
     version: 0.1.0
 generated: "2024-10-12T16:25:46.344403214-04:00"
