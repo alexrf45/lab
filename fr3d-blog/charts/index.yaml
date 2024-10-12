@@ -7,9 +7,9 @@ entries:
     description: My personal blog
     digest: cd437a9eebaef75b6df887bae182126ed761dd4cedcd726b680ee6d531fc95e9
     icon: https://gohugo.io/images/hugo-logo-wide.svg
-    name: fr3d-blog
+    name: "fr3d-blog"
     type: application
     urls:
-    - https://github.com/alexrf45/lab/fr3d-blog/charts/
+    - https://alexrf45.github.io/lab/fr3d-blog/charts/
     version: 0.1.0
 generated: "2024-10-12T16:25:46.344403214-04:00"
