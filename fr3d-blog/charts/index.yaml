@@ -10,6 +10,6 @@ entries:
     name: "fr3d-blog"
     type: application
     urls:
-    - https://alexrf45.github.io/lab/fr3d-blog/charts/
+    - https://alexrf45.github.io/lab/fr3d-blog/charts/index.yaml
     version: 0.1.0
 generated: "2024-10-12T16:25:46.344403214-04:00"
