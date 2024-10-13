@@ -11,7 +11,7 @@ resource "random_bytes" "secret" {
 
 resource "cloudflare_tunnel" "dev" {
   account_id = var.account_id
-  name       = "${var.env}-${var.app}"
+  name       = "${var.subdomain}.${var.site_domain}"
   secret     = random_bytes.secret.base64
 }
 
@@ -26,7 +26,7 @@ resource "cloudflare_tunnel_config" "tunnel" {
       no_tls_verify = true
     }
     ingress_rule {
-      hostname = "${var.env}-${var.app}.${var.site_domain}"
+      hostname = "${var.subdomain}.${var.site_domain}"
       #path     = "*"
       service = var.service_domain
     }

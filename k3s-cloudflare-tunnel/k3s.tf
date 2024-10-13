@@ -2,24 +2,15 @@ provider "kubernetes" {
   config_path = var.k3s_config_file_path
 }
 
-
-# resource "kubernetes_namespace" "cloudflare" {
-#   metadata {
-#     name = var.app
-#     labels = {
-#       "app" = var.app
-#     }
-#   }
-# }
 data "kubernetes_namespace" "namespace" {
   metadata {
-    name = var.app
+    name = var.namespace
   }
 }
 
 resource "kubernetes_config_map" "config" {
   metadata {
-    name = "cf-config"
+    name = "${var.env}-${var.app}-cf-config"
     #namespace = kubernetes_namespace.cloudflare.metadata[0].name
     namespace = data.kubernetes_namespace.namespace.metadata[0].name
     labels = {
@@ -35,7 +26,7 @@ credentials-file: /etc/cloudflared/creds/credentials.json
 metrics: 0.0.0.0:2000
 no-autoupdate: true
 ingress:
-- hostname: ${var.env}-${var.app}.${var.site_domain}
+- hostname: ${var.subdomain}.${var.site_domain}
   service: ${var.service_domain}
 - service: http_status:404
 EOF
@@ -44,8 +35,8 @@ EOF
 
 resource "kubernetes_secret" "creds" {
   metadata {
-    name      = "creds"
-    namespace = data.kubernetes_namespace.namespace.metadata[0].name
+    name      = "${var.env}-${var.app}-creds"
+    namespace = var.namespace
     labels = {
       "app"  = var.app
       "tier" = var.env
@@ -68,8 +59,8 @@ resource "kubernetes_deployment" "cloudflared" {
     create = "5m"
   }
   metadata {
-    name      = "cloudflared"
-    namespace = data.kubernetes_namespace.namespace.metadata[0].name
+    name      = "${var.env}-${var.app}-cloudflared"
+    namespace = var.namespace
     labels = {
       app  = var.app
       tier = var.env
@@ -93,9 +84,6 @@ resource "kubernetes_deployment" "cloudflared" {
         }
       }
       spec {
-        node_selector = {
-          "tier" = "prod"
-        }
         container {
           image = "cloudflare/cloudflared:latest"
           name  = "cloudflared"
@@ -104,7 +92,7 @@ resource "kubernetes_deployment" "cloudflared" {
           resources {
             limits = {
               cpu    = "500m"
-              memory = "512Mi"
+              memory = "200Mi"
             }
             requests = {
               cpu    = "100m"
@@ -135,7 +123,7 @@ resource "kubernetes_deployment" "cloudflared" {
           }
         }
         volume {
-          name = "config"
+          name = "${var.env}-${var.app}-config"
           config_map {
             name = kubernetes_config_map.config.metadata[0].name
             items {
@@ -145,7 +133,7 @@ resource "kubernetes_deployment" "cloudflared" {
           }
         }
         volume {
-          name = "creds"
+          name = "${var.env}-${var.app}-creds"
           secret {
             secret_name = kubernetes_secret.creds.metadata[0].name
           }
