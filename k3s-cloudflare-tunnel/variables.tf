@@ -16,11 +16,13 @@ variable "app" {
   description = "app or project name"
   type        = string
   default     = ""
-  # validation {
-  #   condition     = length(var.app) > 2
-  #   error_message = "app name must be at least 2 characters"
-  # }
 }
+variable "subdomain" {
+  description = "subdomain for tunnel to resolve to"
+  type        = string
+  default     = ""
+}
+
 
 variable "site_domain" {
   description = "domain name of specified zone"
@@ -50,6 +52,12 @@ variable "k3s_config_file_path" {
   description = "file path for kube config"
   type        = string
   default     = "~/.kube/config"
+}
+
+variable "namespace" {
+  description = "namespace to deploy tunnel in"
+  type        = string
+  default     = "default"
 }
 
 variable "replicas" {
