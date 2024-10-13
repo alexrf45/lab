@@ -96,17 +96,17 @@ resource "kubernetes_deployment" "cloudflared" {
             }
             requests = {
               cpu    = "100m"
-              memory = "500Mi"
+              memory = "200Mi"
             }
 
           }
           volume_mount {
-            name       = "config"
+            name       = "${var.env}-${var.app}-config"
             mount_path = "/etc/cloudflared/config"
             read_only  = true
           }
           volume_mount {
-            name       = "creds"
+            name       = "${var.env}-${var.app}-creds"
             mount_path = "/etc/cloudflared/creds"
             read_only  = true
           }
