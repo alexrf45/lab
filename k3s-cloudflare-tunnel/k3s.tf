@@ -35,7 +35,7 @@ credentials-file: /etc/cloudflared/creds/credentials.json
 metrics: 0.0.0.0:2000
 no-autoupdate: true
 ingress:
-- hostname: ${var.env}-${var.app}.${var.site_domain}
+- hostname: ${var.env}.${var.app}.${var.site_domain}
   service: ${var.service_domain}
 - service: http_status:404
 EOF
@@ -93,9 +93,6 @@ resource "kubernetes_deployment" "cloudflared" {
         }
       }
       spec {
-        # node_selector = {
-        #   "tier" = "prod"
-        # }
         container {
           image = "cloudflare/cloudflared:latest"
           name  = "cloudflared"
@@ -103,12 +100,12 @@ resource "kubernetes_deployment" "cloudflared" {
 
           resources {
             limits = {
-              cpu    = "500m"
-              memory = "512Mi"
+              cpu    = "200m"
+              memory = "120Mi"
             }
             requests = {
-              cpu    = "100m"
-              memory = "500Mi"
+              cpu    = "200m"
+              memory = "120Mi"
             }
 
           }

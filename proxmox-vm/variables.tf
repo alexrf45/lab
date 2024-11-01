@@ -94,6 +94,12 @@ variable "emulatessd" {
   default     = true
 }
 
+variable "gateway" {
+  description = "default gateway"
+  type        = string
+  default     = "192.168.100.1"
+}
+
 
 variable "nameserver" {
   description = "dns nameserver"

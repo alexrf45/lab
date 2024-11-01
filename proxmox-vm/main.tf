@@ -39,7 +39,7 @@ resource "proxmox_vm_qemu" "vm" {
       }
     }
   }
-  ipconfig0  = "ip=${each.value.ip}/24,gw=${var.nameserver}"
+  ipconfig0  = "ip=${each.value.ip}/24,gw=${var.gateway}"
   ciuser     = var.ciuser
   cipassword = var.cipassword
   boot       = var.boot
