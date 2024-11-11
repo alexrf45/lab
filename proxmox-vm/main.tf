@@ -18,6 +18,9 @@ resource "proxmox_vm_qemu" "vm" {
   bootdisk    = var.boot_disk
   hastate     = var.hastate
 
+  vga {
+    type = "serial0"
+  }
   disks {
     ide {
       ide3 {

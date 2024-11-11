@@ -69,13 +69,6 @@ variable "hastate" {
   default     = "ignored"
 }
 
-variable "storage_location" {
-  description = "location of vm storage"
-  type        = string
-  default     = "local-lvm"
-}
-
-
 variable "backup" {
   description = "whether to include drive in backups"
   type        = bool
