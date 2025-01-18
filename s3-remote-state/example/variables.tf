@@ -1,14 +1,8 @@
-
-variable "resource_tags" {
-  description = "Tags to set for all resources"
-  type        = map(any)
-  default = {
-    project     = "etcd-snapshot"
-    environment = "dev"
-    Name        = "s3_etcd_snapshot"
-  }
+variable "region" {
+  description = "aws region to deploy resources in"
+  type        = string
+  default     = "us-east-1"
 }
-
 
 variable "env" {
   description = "code/app environement"
@@ -27,11 +21,7 @@ variable "env" {
 variable "app" {
   description = "app or project name"
   type        = string
-  default     = ""
-  validation {
-    condition     = length(var.app) > 4
-    error_message = "app name must be at least 4 characters"
-  }
+  default     = "app"
 }
 
 variable "versioning" {
@@ -45,9 +35,4 @@ variable "versioning" {
     ])
     error_message = "Please specify Enabled or Disabled"
   }
-}
-
-variable "path" {
-  description = "path of iam user"
-  type        = string
 }

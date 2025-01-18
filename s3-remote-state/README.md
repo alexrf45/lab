@@ -7,6 +7,7 @@
 - Inputs for `app` must be four letters or longer
 - Bucket versioning can be enabled or disabled via the `versioning` input
 - If and only if the environment is set to `dev`, the s3 bucket can be force destroyed
+- **A `random_uuid` resource is used a suffix for the bucket name to allow for rapid creation and deletion.**
 
 1. Set up folder and deploy resources with a local tfstate file
 
@@ -78,45 +79,105 @@ output "dynamodb_arn" {
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+The following requirements are needed by this module:
+
+- <a name="requirement_aws"></a> [aws](#requirement\_aws) (~> 5.0)
+
+- <a name="requirement_random"></a> [random](#requirement\_random) (3.6.3)
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
+The following providers are used by this module:
+
+- <a name="provider_aws"></a> [aws](#provider\_aws) (~> 5.0)
+
+- <a name="provider_random"></a> [random](#provider\_random) (3.6.3)
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [aws_dynamodb_table.terraform_locks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table) | resource |
-| [aws_s3_bucket.terraform_state](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
-| [aws_s3_bucket_policy.backend](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
-| [aws_s3_bucket_public_access_block.public_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
-| [aws_s3_bucket_server_side_encryption_configuration.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
-| [aws_s3_bucket_versioning.enabled](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_iam_policy_document.s3-backend](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+The following resources are used by this module:
 
-## Inputs
+- [aws_dynamodb_table.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table) (resource)
+- [aws_s3_bucket.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) (resource)
+- [aws_s3_bucket_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) (resource)
+- [aws_s3_bucket_public_access_block.public_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) (resource)
+- [aws_s3_bucket_server_side_encryption_configuration.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) (resource)
+- [aws_s3_bucket_versioning.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) (resource)
+- [random_uuid.this](https://registry.terraform.io/providers/hashicorp/random/3.6.3/docs/resources/uuid) (resource)
+- [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) (data source)
+- [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) (data source)
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_app"></a> [app](#input\_app) | app or project name | `string` | n/a | yes |
-| <a name="input_env"></a> [env](#input\_env) | code/app environement | `string` | n/a | yes |
-| <a name="input_versioning"></a> [versioning](#input\_versioning) | enable bucket versioning | `string` | `"Enabled"` | no |
+## Required Inputs
+
+The following input variables are required:
+
+### <a name="input_env"></a> [env](#input\_env)
+
+Description: code/app environement
+
+Type: `string`
+
+## Optional Inputs
+
+The following input variables are optional (have default values):
+
+### <a name="input_app"></a> [app](#input\_app)
+
+Description: app or project name
+
+Type: `string`
+
+Default: `"app"`
+
+### <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags)
+
+Description: Tags to set for all resources
+
+Type: `map(any)`
+
+Default:
+
+```json
+{
+  "Name": "Remote State For Terraform",
+  "environment": "dev",
+  "project": "terraform-s3-remote-state"
+}
+```
+
+### <a name="input_versioning"></a> [versioning](#input\_versioning)
+
+Description: enable bucket versioning
+
+Type: `string`
+
+Default: `"Enabled"`
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_account_id"></a> [account\_id](#output\_account\_id) | n/a |
-| <a name="output_bucket_name"></a> [bucket\_name](#output\_bucket\_name) | The name of the bucket |
-| <a name="output_caller_arn"></a> [caller\_arn](#output\_caller\_arn) | n/a |
-| <a name="output_dynamodb_arn"></a> [dynamodb\_arn](#output\_dynamodb\_arn) | ARN of dynamodb\_table |
-| <a name="output_dynamodb_table_name"></a> [dynamodb\_table\_name](#output\_dynamodb\_table\_name) | The name of the DynamoDB table |
-| <a name="output_s3_bucket_arn"></a> [s3\_bucket\_arn](#output\_s3\_bucket\_arn) | The ARN of the S3 bucket |
+The following outputs are exported:
+
+### <a name="output_account_id"></a> [account\_id](#output\_account\_id)
+
+Description: n/a
+
+### <a name="output_bucket_name"></a> [bucket\_name](#output\_bucket\_name)
+
+Description: The name of the bucket
+
+### <a name="output_caller_arn"></a> [caller\_arn](#output\_caller\_arn)
+
+Description: n/a
+
+### <a name="output_dynamodb_arn"></a> [dynamodb\_arn](#output\_dynamodb\_arn)
+
+Description: ARN of dynamodb\_table
+
+### <a name="output_dynamodb_table_name"></a> [dynamodb\_table\_name](#output\_dynamodb\_table\_name)
+
+Description: The name of the DynamoDB table
+
+### <a name="output_s3_bucket_arn"></a> [s3\_bucket\_arn](#output\_s3\_bucket\_arn)
+
+Description: The ARN of the S3 bucket
 <!-- END_TF_DOCS -->
