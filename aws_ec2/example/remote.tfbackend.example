@@ -1,5 +1,0 @@
-bucket = "dev-test-state"
-region = "us-east-1"
-dynamodb_table = "dev-test-tf-locks"
-key = "state/dev/test.tfstate"
-encrypt = true
