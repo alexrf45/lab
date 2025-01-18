@@ -1,4 +1,6 @@
-# <span style="color: blue;"><h1>Lab </h1></span>
+# <span style="color: blue;"><h2>Lab </h2></span>
+
+
 
 Terraform modules and other code I've either built or modified. I utilize this repo for deploying resources in my home lab as well as in the cloud.
 
