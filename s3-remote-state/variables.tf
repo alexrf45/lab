@@ -1,3 +1,14 @@
+variable "resource_tags" {
+  description = "Tags to set for all resources"
+  type        = map(any)
+  default = {
+    project     = "terraform-s3-remote-state"
+    environment = "dev"
+    Name        = "Remote State For Terraform"
+  }
+}
+
+
 variable "env" {
   description = "code/app environement"
   type        = string
@@ -15,7 +26,7 @@ variable "env" {
 variable "app" {
   description = "app or project name"
   type        = string
-  default = "app"
+  default     = "app"
 }
 
 variable "versioning" {
