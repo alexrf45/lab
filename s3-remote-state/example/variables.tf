@@ -1,13 +1,8 @@
-variable "resource_tags" {
-  description = "Tags to set for all resources"
-  type        = map(any)
-  default = {
-    project     = "terraform-s3-remote-state"
-    environment = "dev"
-    Name        = "Remote State For Terraform"
-  }
+variable "region" {
+  description = "aws region to deploy resources in"
+  type        = string
+  default     = "us-east-1"
 }
-
 
 variable "env" {
   description = "code/app environement"
