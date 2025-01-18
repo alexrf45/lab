@@ -27,8 +27,6 @@ metrics: 0.0.0.0:2000
 no-autoupdate: true
 ingress:
 - hostname: ${var.subdomain}.${var.site_domain}
-  service: ${var.service_domain}
-- service: http_status:404
 EOF
   }
 }
@@ -97,8 +95,8 @@ resource "kubernetes_deployment" "cloudflared" {
             requests = {
               cpu    = "100m"
               memory = "200Mi"
-            }
 
+            }
           }
           volume_mount {
             name       = "${var.env}-${var.app}-config"

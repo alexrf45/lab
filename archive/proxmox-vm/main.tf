@@ -5,7 +5,7 @@ resource "proxmox_vm_qemu" "vm" {
   target_node = each.value.node
   memory      = each.value.memory
   tags        = each.value.tags
-  desc        = var.description
+  desc        = each.value.description
   onboot      = var.onboot
   bios        = var.bios
   clone       = each.value.template
@@ -16,12 +16,16 @@ resource "proxmox_vm_qemu" "vm" {
   vcpus       = var.vcpu
   scsihw      = var.scsihw
   bootdisk    = var.boot_disk
+  hastate     = var.hastate
 
+  vga {
+    type = "serial0"
+  }
   disks {
     ide {
       ide3 {
         cloudinit {
-          storage = var.storage_location
+          storage = each.value.storage_location
         }
       }
     }
@@ -29,15 +33,16 @@ resource "proxmox_vm_qemu" "vm" {
     scsi {
       scsi0 {
         disk {
-          storage   = var.storage_location
-          size      = each.value.size
-          backup    = var.backup
-          replicate = var.replicate
+          storage    = each.value.storage_location
+          size       = each.value.size
+          backup     = var.backup
+          replicate  = var.replicate
+          emulatessd = var.emulatessd
         }
       }
     }
   }
-  ipconfig0  = "ip=${each.value.ip}/24,gw=${var.nameserver}"
+  ipconfig0  = "ip=${each.value.ip}/24,gw=${var.gateway}"
   ciuser     = var.ciuser
   cipassword = var.cipassword
   boot       = var.boot

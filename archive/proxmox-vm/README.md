@@ -11,7 +11,7 @@ terraform {
   required_providers {
     proxmox = {
       source  = "Telmate/proxmox"
-      version = "3.0.1-rc2"
+      version = "3.0.1-rc4"
     }
     aws = {
       source  = "hashicorp/aws"
@@ -83,19 +83,19 @@ module "dev" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-| <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 3.0.1-rc2 |
+| <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 3.0.1-rc4 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 3.0.1-rc2 |
+| <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 3.0.1-rc4 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [proxmox_vm_qemu.vm](https://registry.terraform.io/providers/Telmate/proxmox/3.0.1-rc2/docs/resources/vm_qemu) | resource |
+| [proxmox_vm_qemu.vm](https://registry.terraform.io/providers/Telmate/proxmox/3.0.1-rc4/docs/resources/vm_qemu) | resource |
 
 ## Inputs
 
@@ -110,7 +110,8 @@ module "dev" {
 | <a name="input_cipassword"></a> [cipassword](#input\_cipassword) | override cloud-init password | `string` | `"password1234"` | no |
 | <a name="input_ciuser"></a> [ciuser](#input\_ciuser) | override default cloud-init user | `string` | `"ubuntu"` | no |
 | <a name="input_cores"></a> [cores](#input\_cores) | number of virtual cores | `number` | `1` | no |
-| <a name="input_description"></a> [description](#input\_description) | description of resource | `string` | `"resource"` | no |
+| <a name="input_emulatessd"></a> [emulatessd](#input\_emulatessd) | whether to emulate ssd | `bool` | `true` | no |
+| <a name="input_hastate"></a> [hastate](#input\_hastate) | whether to enable ha for vm | `string` | `"ignored"` | no |
 | <a name="input_nameserver"></a> [nameserver](#input\_nameserver) | dns nameserver | `string` | `""` | no |
 | <a name="input_numa"></a> [numa](#input\_numa) | not sure what it does | `bool` | `true` | no |
 | <a name="input_onboot"></a> [onboot](#input\_onboot) | whether to have the vm power on after creation | `bool` | `true` | no |
@@ -118,7 +119,6 @@ module "dev" {
 | <a name="input_replicate"></a> [replicate](#input\_replicate) | whether to include drive in replication jobs | `bool` | `true` | no |
 | <a name="input_scsihw"></a> [scsihw](#input\_scsihw) | type of virtual drive in use | `string` | `"virtio-scsi-pci"` | no |
 | <a name="input_ssh_key_path"></a> [ssh\_key\_path](#input\_ssh\_key\_path) | file path of ssh public key | `string` | `"$HOME/.ssh/lab.pub"` | no |
-| <a name="input_storage_location"></a> [storage\_location](#input\_storage\_location) | location of vm storage | `string` | `"local-lvm"` | no |
 | <a name="input_vcpu"></a> [vcpu](#input\_vcpu) | number of virtual cpus | `number` | `1` | no |
 
 ## Outputs

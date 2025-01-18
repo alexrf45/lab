@@ -2,7 +2,7 @@ terraform {
   required_providers {
     proxmox = {
       source  = "Telmate/proxmox"
-      version = "3.0.1-rc2"
+      version = "3.0.1-rc4"
     }
     aws = {
       source  = "hashicorp/aws"
@@ -36,40 +36,42 @@ provider "proxmox" {
 
 # expand the template and node based desired count and distribution of VMs
 module "dev" {
-  source           = "../"
-  onboot           = true
-  scsihw           = "virtio-scsi-pci"
-  description      = "testing"
-  boot_disk        = "scsi0"
-  bios             = "seabios"
-  agent            = 1
-  storage_location = "local-lvm"
-  nameserver       = "1.1.1.1"
-  ciuser           = "test-user"
-  cipassword       = "password"
-  ssh_key_path     = "~/.ssh/lab.pub"
+  source       = "../"
+  onboot       = true
+  scsihw       = "virtio-scsi-pci"
+  boot_disk    = "scsi0"
+  bios         = "seabios"
+  agent        = 1
+  nameserver   = "1.1.1.1"
+  ciuser       = "test-user"
+  cipassword   = "password"
+  ssh_key_path = "~/.ssh/lab.pub"
 
 
   vm_config = {
     v1 = {
-      node     = "home-1",
-      template = "ubuntu",
-      tags     = "db1"
-      vm_id    = "9900"
-      memory   = "4096",
-      size     = "25",
-      vm_name  = "test-vm-1",
-      ip       = "192.168.101.110",
+      node             = "home-1",
+      template         = "ubuntu",
+      tags             = "db1",
+      description      = "database",
+      vm_id            = "9900"
+      memory           = "4096",
+      size             = "25",
+      storage_location = "local-lvm",
+      vm_name          = "test-vm-1",
+      ip               = "192.168.101.110",
     },
     v2 = {
-      node     = "home-1",
-      template = "ubuntu-cloud-init",
-      tags     = "db2"
-      vm_id    = "9901"
-      memory   = "4096",
-      size     = "25",
-      vm_name  = "test-vm-2",
-      ip       = "192.168.101.111",
+      node             = "home-1",
+      template         = "ubuntu-cloud-init",
+      tags             = "db2",
+      description      = "database",
+      vm_id            = "9901"
+      memory           = "4096",
+      size             = "25",
+      storage_location = "local-lvm",
+      vm_name          = "test-vm-2",
+      ip               = "192.168.101.111",
     }
   }
 

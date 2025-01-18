@@ -21,11 +21,11 @@ variable "bios" {
   type        = string
   default     = "seabios"
 }
-variable "description" {
-  description = "description of resource"
-  type        = string
-  default     = "resource"
-}
+# variable "description" {
+#   description = "description of resource"
+#   type        = string
+#   default     = "resource"
+# }
 
 variable "numa" {
   description = "not sure what it does"
@@ -63,12 +63,11 @@ variable "boot_disk" {
   default     = "scsi0"
 }
 
-variable "storage_location" {
-  description = "location of vm storage"
+variable "hastate" {
+  description = "whether to enable ha for vm"
   type        = string
-  default     = "local-lvm"
+  default     = "ignored"
 }
-
 
 variable "backup" {
   description = "whether to include drive in backups"
@@ -80,6 +79,18 @@ variable "replicate" {
   description = "whether to include drive in replication jobs"
   type        = bool
   default     = true
+}
+
+variable "emulatessd" {
+  description = "whether to emulate ssd"
+  type        = bool
+  default     = true
+}
+
+variable "gateway" {
+  description = "default gateway"
+  type        = string
+  default     = "192.168.100.1"
 }
 
 
