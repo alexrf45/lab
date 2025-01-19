@@ -50,7 +50,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
       install_image = each.value.install_image
     }),
     file("${path.module}/patches/cp-scheduling.yaml"),
-    #file("${path.module}/patches/cilium-cni-patch.yaml")
+    file("${path.module}/patches/cilium-cni-patch.yaml")
 
   ]
   timeouts = {

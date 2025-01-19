@@ -1,3 +1,9 @@
+variable "flux_extras" {
+  description = "list of additional flux components to install"
+  type        = list(string)
+}
+
+
 variable "github_repository" {
   description = "Information about new GitHub repository for FluxCD"
   type = object({
