@@ -52,7 +52,7 @@ resource "proxmox_virtual_environment_vm" "talos_vm_control_plane" {
   }
 
   disk {
-    datastore_id = each.value.datastore_id
+    datastore_id = each.value.storage_id
     interface    = "virtio1"
     file_format  = "raw"
     ssd          = true
