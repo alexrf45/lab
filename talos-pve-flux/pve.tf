@@ -83,6 +83,9 @@ resource "proxmox_virtual_environment_vm" "talos_vm_control_plane" {
   operating_system {
     type = "l26"
   }
+  timeouts = {
+    create = "5m"
+  }
 }
 
 resource "proxmox_virtual_environment_vm" "talos_vm" {
@@ -160,5 +163,8 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
 
   operating_system {
     type = "l26"
+  }
+  timeouts = {
+    create = "5m"
   }
 }
