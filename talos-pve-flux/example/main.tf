@@ -3,9 +3,9 @@ module "dev-test" {
   github_owner = var.github_owner
   github_pat   = var.github_pat
   github_repository = {
-    name        = "home-ops-flux"
-    description = "Flux git repo for cluster"
-    visibility  = "private"
+    name        = var.github_repository.name
+    description = var.github_repository.description
+    visibility  = var.github_repository.visibility
   }
   pve_nodes = ["anubis", "cairo"]
   #  pve_nodes = ["anubis", "cairo", "bastet", "horus"] multi contol plane configuration
@@ -24,6 +24,7 @@ module "dev-test" {
         install_disk  = "/dev/vda"
         install_image = "${module.dev-test.schematic_id}"
         datastore_id  = "data"
+        storage_id    = "local-lvm"
         node          = "cairo"
         memory        = 8092
         size          = 50
@@ -53,6 +54,7 @@ module "dev-test" {
         install_disk  = "/dev/vda"
         install_image = "${module.dev-test.schematic_id}"
         datastore_id  = "data"
+        storage_id    = "local-lvm"
         node          = "anubis"
         memory        = 8092
         size          = 50
@@ -62,6 +64,7 @@ module "dev-test" {
         install_disk  = "/dev/vda"
         install_image = "${module.dev-test.schematic_id}"
         datastore_id  = "data"
+        storage_id    = "local-lvm"
         node          = "anubis"
         memory        = 8092
         size          = 50
