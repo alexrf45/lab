@@ -3,11 +3,11 @@ data "talos_image_factory_extensions_versions" "this" {
   talos_version = var.cluster.talos_version
   filters = {
     names = [
+      "intel-ucode",
+      "glibc",
       "iscsi-tools",
       "util-linux-tools",
       "qemu-guest-agent",
-      "tailscale",
-      "vmtoolsd-quest-agent"
     ]
   }
 }

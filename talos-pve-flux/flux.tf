@@ -10,6 +10,9 @@ resource "flux_bootstrap_git" "this" {
   depends_on = [
     github_repository.this
   ]
-  embedded_manifests = false
+  components_extra   = var.flux_extras
+  embedded_manifests = true
   path               = format("clusters/%s", var.cluster.name)
+  interval           = "2m0s"
+
 }
