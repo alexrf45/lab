@@ -75,7 +75,6 @@ resource "talos_machine_configuration_apply" "worker" {
       install_disk  = each.value.install_disk
       install_image = each.value.install_image
     }),
-    #file("${path.module}/patches/cilium-cni-patch.yaml"),
 
   ]
   timeouts = {
@@ -124,21 +123,21 @@ resource "time_sleep" "wait_until_bootstrap" {
 
 resource "local_sensitive_file" "kubeconfig" {
   content         = talos_cluster_kubeconfig.this.kubeconfig_raw
-  filename        = "${path.root}/configs/kubeconfig"
+  filename        = "${path.root}/outputs/kubeconfig"
   file_permission = "0600"
 }
 
 resource "local_sensitive_file" "talosconfig" {
   content  = data.talos_client_configuration.this.talos_config
-  filename = "${path.root}/configs/talosconfig"
+  filename = "${path.root}/outputs/talosconfig"
 }
 
 resource "local_sensitive_file" "controlplane_config" {
   content  = data.talos_machine_configuration.controlplane.machine_configuration
-  filename = "${path.root}/configs/controlplane.yaml"
+  filename = "${path.root}/outputs/controlplane.yaml"
 }
 
 resource "local_sensitive_file" "worker_config" {
   content  = data.talos_machine_configuration.worker.machine_configuration
-  filename = "${path.root}/configs/worker.yaml"
+  filename = "${path.root}/outputs/worker.yaml"
 }

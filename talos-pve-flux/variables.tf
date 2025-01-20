@@ -30,6 +30,11 @@ variable "github_pat" {
   sensitive   = true
 }
 
+variable "create_repo" {
+  description = "whether to create new repository for deploying flux manifests"
+  type        = bool
+  default     = false
+}
 
 
 variable "pve_nodes" {

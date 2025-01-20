@@ -1,5 +1,6 @@
 resource "github_repository" "this" {
   depends_on  = [time_sleep.wait_until_bootstrap]
+  count       = var.create_repo
   name        = var.github_repository.name
   description = var.github_repository.description
   visibility  = var.github_repository.visibility

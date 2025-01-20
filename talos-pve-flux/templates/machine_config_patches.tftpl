@@ -3,6 +3,8 @@ machine:
       modules:
           - name: tun
   kubelet:
+    extraArgs:
+      rotate-server-certificates: true
     nodeIP:
       validSubnets:
         - 10.3.3.0/24
@@ -23,3 +25,9 @@ machine:
     image: ${install_image}
   network:
     hostname: ${hostname}
+    serviceSubnets:
+      - 10.43.0.0/16
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
+

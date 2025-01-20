@@ -16,7 +16,7 @@ variable "github_owner" {
 }
 
 variable "github_repository" {
-  description = "Information about new GitHub repository for FluxCD"
+  description = "Information about new or existing GitHub repository for FluxCD"
   type = object({
     name        = string
     description = string
@@ -27,4 +27,10 @@ variable "github_repository" {
     description = "Homelab built with Talos on Proxmox and managed with Flux"
     visibility  = "private"
   }
+}
+
+variable "create_repo" {
+  description = "whether to create new repository for deploying flux manifests"
+  type        = bool
+  default     = false
 }

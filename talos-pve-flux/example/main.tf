@@ -1,5 +1,6 @@
 module "dev-test" {
   source       = "github.com/alexrf45/lab//talos-pve-flux?ref=talos-pve"
+  create_repo  = true
   github_owner = var.github_owner
   github_pat   = var.github_pat
   github_repository = {

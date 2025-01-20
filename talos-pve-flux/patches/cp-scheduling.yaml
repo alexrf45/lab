@@ -1,2 +1,10 @@
 cluster:
   allowSchedulingOnControlPlanes: true
+  network:
+    cni:
+      name: none
+    serviceSubnets:
+      - 10.43.0.0/16
+  proxy:
+    disabled: true
+
