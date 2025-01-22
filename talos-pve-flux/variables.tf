@@ -5,23 +5,15 @@ variable "flux_extras" {
 
 
 variable "github_repository" {
-  description = "Information about new GitHub repository for FluxCD"
-  type = object({
-    name        = string
-    description = string
-    visibility  = string
-  })
-  default = {
-    name        = "fr3d"
-    description = "Homelab built with Talos on Proxmox and managed with Flux"
-    visibility  = "private"
-  }
+  description = "Existing Git Repo for bootstrapping flux"
+  type        = string
+  default     = "home-ops"
 }
 
 variable "github_owner" {
   description = "Owner of the repository"
   type        = string
-  default     = ""
+  default     = "alexrf45"
 }
 
 variable "github_pat" {
@@ -30,11 +22,11 @@ variable "github_pat" {
   sensitive   = true
 }
 
-variable "create_repo" {
-  description = "whether to create new repository for deploying flux manifests"
-  type        = bool
-  default     = false
-}
+# variable "create_repo" {
+#   description = "whether to create new repository for deploying flux manifests"
+#   type        = bool
+#   default     = false
+# }
 
 
 variable "pve_nodes" {
@@ -48,6 +40,7 @@ variable "cluster" {
   description = "Cluster configuration"
   type = object({
     name          = string
+    env           = string
     endpoint      = string
     gateway       = string
     talos_version = string
