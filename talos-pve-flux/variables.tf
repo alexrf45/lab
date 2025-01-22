@@ -55,26 +55,28 @@ variable "node_data" {
   description = "A map of node data"
   type = object({
     controlplanes = map(object({
-      install_disk  = string
-      install_image = string
-      datastore_id  = string
-      storage_id    = string
-      hostname      = optional(string)
-      node          = string
-      memory        = number
-      size          = number
-      storage       = number
+      install_disk     = string
+      install_image    = string
+      allow_scheduling = bool
+      datastore_id     = string
+      storage_id       = string
+      hostname         = optional(string)
+      node             = string
+      memory           = number
+      size             = number
+      storage          = number
     }))
     workers = map(object({
-      install_disk  = string
-      install_image = string
-      datastore_id  = string
-      storage_id    = string
-      hostname      = optional(string)
-      node          = string
-      memory        = number
-      size          = number
-      storage       = number
+      install_disk     = string
+      install_image    = string
+      allow_scheduling = bool
+      datastore_id     = string
+      storage_id       = string
+      hostname         = optional(string)
+      node             = string
+      memory           = number
+      size             = number
+      storage          = number
     }))
   })
 }

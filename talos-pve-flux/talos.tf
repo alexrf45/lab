@@ -43,9 +43,11 @@ resource "talos_machine_configuration_apply" "controlplane" {
   machine_configuration_input = data.talos_machine_configuration.controlplane.machine_configuration
   config_patches = [
     templatefile("${path.module}/templates/machine_config_patches.tftpl", {
-      hostname      = each.value.hostname == null ? format("%s-controlplane-%s", var.cluster.name, index(keys(var.node_data.controlplanes), each.key)) : each.value.hostname
-      install_disk  = each.value.install_disk
-      install_image = each.value.install_image
+      hostname         = each.value.hostname == null ? format("%s-controlplane-%s", var.cluster.name, index(keys(var.node_data.controlplanes), each.key)) : each.value.hostname
+      install_disk     = each.value.install_disk
+      install_image    = each.value.install_image
+      allow_scheduling = each.value.allow_scheduling
+
     }),
     #file("${path.module}/patches/cp-scheduling.yaml"),
   ]
@@ -67,9 +69,10 @@ resource "talos_machine_configuration_apply" "worker" {
   #endpoint                    = var.cluster.endpoint
   config_patches = [
     templatefile("${path.module}/templates/machine_config_patches.tftpl", {
-      hostname      = each.value.hostname == null ? format("%s-worker-%s", var.cluster.name, index(keys(var.node_data.workers), each.key)) : each.value.hostname
-      install_disk  = each.value.install_disk
-      install_image = each.value.install_image
+      hostname         = each.value.hostname == null ? format("%s-worker-%s", var.cluster.name, index(keys(var.node_data.workers), each.key)) : each.value.hostname
+      install_disk     = each.value.install_disk
+      install_image    = each.value.install_image
+      allow_scheduling = each.value.allow_scheduling
     }),
 
   ]
