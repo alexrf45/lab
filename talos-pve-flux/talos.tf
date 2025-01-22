@@ -33,8 +33,6 @@ resource "talos_machine_configuration_apply" "controlplane" {
   depends_on = [
     proxmox_virtual_environment_vm.talos_vm_control_plane,
     data.talos_client_configuration.this,
-    data.helm_template.cilium_template,
-    local_file.cilium_config
   ]
   for_each   = var.node_data.controlplanes
   apply_mode = "auto"
@@ -49,7 +47,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
       install_disk  = each.value.install_disk
       install_image = each.value.install_image
     }),
-    file("${path.module}/patches/cp-scheduling.yaml"),
+    #file("${path.module}/patches/cp-scheduling.yaml"),
   ]
   timeouts = {
     create = "5m"
@@ -58,8 +56,6 @@ resource "talos_machine_configuration_apply" "controlplane" {
 }
 resource "talos_machine_configuration_apply" "worker" {
   depends_on = [
-    data.helm_template.cilium_template,
-    local_file.cilium_config,
     proxmox_virtual_environment_vm.talos_vm,
     proxmox_virtual_environment_vm.talos_vm_control_plane,
     talos_machine_configuration_apply.controlplane,
