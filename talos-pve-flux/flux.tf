@@ -7,6 +7,9 @@
 #   auto_init   = true
 # }
 
+# secrets management is a bit weird as I have no way to decrypt the yaml before flux can create
+# the resources on the cluster. most articles show the manual way of creating a secret
+
 resource "flux_bootstrap_git" "this" {
   # depends_on = [
   #   github_repository.this
