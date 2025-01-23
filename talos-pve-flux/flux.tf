@@ -13,6 +13,7 @@
 resource "flux_bootstrap_git" "this" {
   depends_on = [
     talos_machine_bootstrap.this,
+    time_sleep.wait_until_bootstrap,
     talos_cluster_kubeconfig.this
   ]
   components_extra   = var.flux_extras
