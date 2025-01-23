@@ -16,6 +16,12 @@ machine:
           - rbind
           - rshared
           - rw
+  files:
+    - content: |
+        [metrics]
+          address = "0.0.0.0:11234"
+      path: /var/cri/conf.d/metrics.toml
+      op: create
   disks:
     - device: /dev/vdb
       partitions:
