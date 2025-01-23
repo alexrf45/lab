@@ -117,7 +117,7 @@ resource "time_sleep" "wait_until_bootstrap" {
     local_sensitive_file.kubeconfig,
     local_sensitive_file.talosconfig
   ]
-  create_duration = "2m"
+  create_duration = "3m"
 }
 
 resource "local_sensitive_file" "kubeconfig" {
