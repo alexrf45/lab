@@ -11,9 +11,10 @@
 # the resources on the cluster. most articles show the manual way of creating a secret
 
 resource "flux_bootstrap_git" "this" {
-  # depends_on = [
-  #   github_repository.this
-  # ]
+  depends_on = [
+    talos_machine_bootstrap.this,
+    talos_cluster_kubeconfig.this
+  ]
   components_extra   = var.flux_extras
   embedded_manifests = true
   path               = format("clusters/%s", var.cluster.env)
