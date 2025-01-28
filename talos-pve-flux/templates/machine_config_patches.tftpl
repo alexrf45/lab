@@ -52,12 +52,15 @@ cluster:
     - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
     - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
   inlineManifests:
-      - name: namespace-longhorn
+      - name: proxmox-csi-plugin
         contents: |-
           apiVersion: v1
           kind: Namespace
           metadata:
-              name: longhorn
+              name: csi-proxmox
+              labels:
+                pod-security.kubernetes.io/enforce = "privileged"
+                app = "csi-proxmox"
       - name: namespace-external-secrets
         contents: |-
           apiVersion: v1
@@ -70,3 +73,40 @@ cluster:
           kind: Namespace
           metadata:
               name: flux-system
+      - name: proxmox-cloud-controller-manager
+        contents: |-
+          apiVersion: v1
+          kind: Secret
+          type: Opaque
+          metadata:
+            name: proxmox-cloud-controller-manager
+            namespace: csi-proxmox
+          stringData:
+            config.yaml: |
+              clusters:
+                - url: https://${pve_node}:8006/api2/json
+                  insecure: false
+                  token_id: "kubernetes-csi@pve!ccm"
+                  token_secret: ${pve_token}
+                  region: Region-1
+      - name: proxmox-csi-plugin
+        contents: |-
+          apiVersion: v1
+          kind: Secret
+          type: Opaque
+          metadata:
+            name: proxmox-csi-plugin
+            namespace: csi-proxmox
+          stringData:
+            config.yaml: |
+              clusters:
+                - url: https://${pve_node}:8006/api2/json
+                  insecure: false
+                  token_id: "kubernetes-csi@pve!csi"
+                  token_secret: ${pve_token}
+                  region: Region-1
+  externalCloudProvider:
+    enabled: true
+    manifests:
+      - https://raw.githubusercontent.com/sergelogvinov/proxmox-cloud-controller-manager/main/docs/deploy/cloud-controller-manager.yml
+      - https://raw.githubusercontent.com/sergelogvinov/proxmox-csi-plugin/main/docs/deploy/proxmox-csi-plugin.yml

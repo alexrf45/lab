@@ -35,6 +35,10 @@ variable "pve_nodes" {
   default     = ["pve"]
 }
 
+variable "pve_endpoint" {
+  description = "endpoint of pve cluster lead"
+  type        = string
+}
 
 variable "cluster" {
   description = "Cluster configuration"
@@ -57,6 +61,8 @@ variable "node_data" {
     controlplanes = map(object({
       install_disk     = string
       install_image    = string
+      pve_node         = string
+      pve_token        = string
       allow_scheduling = bool
       datastore_id     = string
       storage_id       = string

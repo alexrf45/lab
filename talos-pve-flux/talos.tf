@@ -47,6 +47,8 @@ resource "talos_machine_configuration_apply" "controlplane" {
       install_disk     = each.value.install_disk
       install_image    = each.value.install_image
       allow_scheduling = each.value.allow_scheduling
+      pve_node         = var.pve_endpoint
+      pve_token        = each.value.pve_token
 
     }),
     #file("${path.module}/patches/cp-scheduling.yaml"),

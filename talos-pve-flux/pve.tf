@@ -1,3 +1,32 @@
+resource "proxmox_virtual_environment_role" "proxmox-csi" {
+  role_id = "kubernetes-csi"
+
+  privileges = [
+    "VM.Monitor",
+    "VM.Config.Disk",
+    "Datastore.Allocate",
+    "Datastore.AllocateSpace",
+    "Datastore.Audit"
+  ]
+}
+
+resource "proxmox_virtual_environment_user" "user" {
+  comment         = "Managed by Terraform"
+  email           = "kubernetes-csi@pve"
+  enabled         = true
+  expiration_date = "2034-01-01T22:00:00Z"
+  user_id         = "kubernetes-csi@pve"
+  role_id         = proxmox_virtual_environment_role.proxmox-csi.role_id
+}
+
+resource "proxmox_virtual_environment_user_token" "user_token" {
+  comment               = "Managed by Terraform"
+  expiration_date       = "2033-01-01T22:00:00Z"
+  token_name            = "${var.cluster.name}-token"
+  user_id               = proxmox_virtual_environment_user.user.user_id
+  privileges_seperation = false
+}
+
 resource "proxmox_virtual_environment_download_file" "talos_image" {
   count                   = length(var.pve_nodes)
   content_type            = "iso"
