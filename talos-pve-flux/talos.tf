@@ -2,85 +2,67 @@ resource "talos_machine_secrets" "this" {
   talos_version = var.cluster.talos_version
 }
 
-
-data "talos_machine_configuration" "controlplane" {
-  cluster_name     = var.cluster.name
-  cluster_endpoint = "https://${var.cluster.endpoint}:6443"
-  talos_version    = var.cluster.talos_version
-  machine_type     = "controlplane"
-  machine_secrets  = talos_machine_secrets.this.machine_secrets
-}
-data "talos_machine_configuration" "worker" {
-  cluster_name     = var.cluster.name
-  cluster_endpoint = "https://${var.cluster.endpoint}:6443"
-  talos_version    = var.cluster.talos_version
-  machine_type     = "worker"
-  machine_secrets  = talos_machine_secrets.this.machine_secrets
-}
-
 data "talos_client_configuration" "this" {
   depends_on = [
-    proxmox_virtual_environment_vm.talos_vm_control_plane,
     proxmox_virtual_environment_vm.talos_vm
   ]
   cluster_name         = var.cluster.name
   client_configuration = talos_machine_secrets.this.client_configuration
-  #nodes                = var.talos_nodes
-  endpoints = [for k, v in var.node_data.controlplanes : k]
+  nodes                = [for k, v in var.nodes : v.ip]
+  endpoints            = [for k, v in var.nodes : v.ip if v.machine_type == "controlplane"]
 }
 
-resource "talos_machine_configuration_apply" "controlplane" {
-  depends_on = [
-    proxmox_virtual_environment_vm.talos_vm_control_plane,
-    data.talos_client_configuration.this,
-  ]
-  for_each   = var.node_data.controlplanes
-  apply_mode = "auto"
-  #node       = var.cluster.endpoint
-  node = each.key
-  #endpoint                    = var.cluster.endpoint
-  client_configuration        = talos_machine_secrets.this.client_configuration
-  machine_configuration_input = data.talos_machine_configuration.controlplane.machine_configuration
-  config_patches = [
-    templatefile("${path.module}/templates/machine_config_patches.tftpl", {
-      hostname         = each.value.hostname == null ? format("%s-controlplane-%s", var.cluster.name, index(keys(var.node_data.controlplanes), each.key)) : each.value.hostname
+data "talos_machine_configuration" "this" {
+  for_each         = var.nodes
+  cluster_name     = var.cluster.name
+  cluster_endpoint = "https://${var.cluster.endpoint}:6443"
+  talos_version    = var.cluster.talos_version
+  machine_type     = each.value.machine_type
+  machine_secrets  = talos_machine_secrets.this.machine_secrets
+  config_patches = each.value.machine_type == "controlplane" ? [
+    templatefile("${path.module}/templates/controlplane.yaml.tftpl", {
+      hostname         = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes)))
       install_disk     = each.value.install_disk
-      install_image    = each.value.install_image
+      install_image    = data.talos_image_factory_schematic.id
       allow_scheduling = each.value.allow_scheduling
-      pve_node         = var.pve_endpoint
-      pve_token        = each.value.pve_token
-
+      node_name        = each.value.node
+      cluster_name     = var.cluster.name
+      endpoint         = var.cluster.pve_endpoint
+      pve_token        = proxmox_virtual_environment_user_token.user_token.value
+      cilium_values    = var.cilium.values
+      cilium_install   = var.cilium.install
     }),
-    #file("${path.module}/patches/cp-scheduling.yaml"),
+    ] : [
+    templatefile("${path.module}/templates/worker.yaml.tftpl", {
+      install_disk  = each.value.install_disk
+      install_image = data.talos_image_factory_schematic.id
+      hostname      = format("%s-node-%s", var.cluster.name, index(keys(var.nodes)))
+      node_name     = each.value.node
+      cluster_name  = var.cluster.name
+    })
   ]
-  timeouts = {
-    create = "5m"
-  }
-
 }
-resource "talos_machine_configuration_apply" "worker" {
+
+
+resource "talos_machine_configuration_apply" "this" {
   depends_on = [
     proxmox_virtual_environment_vm.talos_vm,
-    proxmox_virtual_environment_vm.talos_vm_control_plane,
-    talos_machine_configuration_apply.controlplane,
+    data.talos_machine_configuration.this
   ]
+  for_each                    = var.nodes
+  apply_mode                  = "auto"
+  node                        = each.value.ip
   client_configuration        = talos_machine_secrets.this.client_configuration
-  machine_configuration_input = data.talos_machine_configuration.worker.machine_configuration
-  for_each                    = var.node_data.workers
-  node                        = each.key
-  #endpoint                    = var.cluster.endpoint
-  config_patches = [
-    templatefile("${path.module}/templates/machine_config_patches.tftpl", {
-      hostname         = each.value.hostname == null ? format("%s-worker-%s", var.cluster.name, index(keys(var.node_data.workers), each.key)) : each.value.hostname
-      install_disk     = each.value.install_disk
-      install_image    = each.value.install_image
-      allow_scheduling = each.value.allow_scheduling
-    }),
+  machine_configuration_input = data.talos_machine_configuration.this[each.key].machine_configuration
 
-  ]
   timeouts = {
     create = "5m"
   }
+  lifecycle {
+    # re-run config apply if vm changes
+    replace_triggered_by = [proxmox_virtual_environment_vm.talos_vm[each.key]]
+  }
+
 }
 
 
@@ -88,31 +70,15 @@ resource "talos_machine_configuration_apply" "worker" {
 #You only need to bootstrap 1 control node, we pick the first one
 resource "talos_machine_bootstrap" "this" {
   depends_on = [
-    talos_machine_configuration_apply.controlplane,
-    talos_machine_configuration_apply.worker
+    talos_machine_configuration_apply.this
   ]
-  node = var.cluster.endpoint
-  #endpoint             = var.cluster.endpoint
-  client_configuration = talos_machine_secrets.this.client_configuration
-  timeouts = {
-    create = "5m"
-  }
-}
-
-resource "talos_cluster_kubeconfig" "this" {
-  depends_on = [
-    talos_machine_bootstrap.this
-  ]
-  node                 = var.cluster.endpoint
+  node                 = [for k, v in var.nodes : v.ip if v.machine_type == "controlplane"][2]
   endpoint             = var.cluster.endpoint
   client_configuration = talos_machine_secrets.this.client_configuration
   timeouts = {
-    read   = "1m"
     create = "5m"
   }
 }
-
-
 
 resource "time_sleep" "wait_until_bootstrap" {
   depends_on = [
@@ -122,6 +88,21 @@ resource "time_sleep" "wait_until_bootstrap" {
   create_duration = "3m"
 }
 
+resource "talos_cluster_kubeconfig" "this" {
+  depends_on = [
+    talos_machine_bootstrap.this,
+    time_sleep.wait_until_bootstrap
+  ]
+  node                 = [for k, v in var.nodes : v.ip if v.machine_type == "controlplane"][2]
+  endpoint             = var.cluster.endpoint
+  client_configuration = talos_machine_secrets.this.client_configuration
+  timeouts = {
+    read   = "1m"
+    create = "5m"
+  }
+}
+
+
 resource "local_sensitive_file" "kubeconfig" {
   content         = talos_cluster_kubeconfig.this.kubeconfig_raw
   filename        = "${path.root}/outputs/kubeconfig"
@@ -130,13 +111,18 @@ resource "local_sensitive_file" "kubeconfig" {
 
 resource "local_sensitive_file" "kubeconfig_2" {
   content         = talos_cluster_kubeconfig.this.kubeconfig_raw
-  filename        = "${path.module}/outputs/kubeconfig"
+  filename        = "~/.kube/config"
   file_permission = "0600"
 }
 
 resource "local_sensitive_file" "talosconfig" {
   content  = data.talos_client_configuration.this.talos_config
   filename = "${path.root}/outputs/talosconfig"
+}
+
+resource "local_sensitive_file" "talosconfig" {
+  content  = data.talos_client_configuration.this.talos_config
+  filename = "~/.talos/talosconfig"
 }
 
 resource "local_sensitive_file" "controlplane_config" {
