@@ -39,11 +39,15 @@ resource "proxmox_virtual_environment_download_file" "talos_image" {
   url                     = data.talos_image_factory_urls.this.urls.disk_image
   decompression_algorithm = "zst"
   file_name               = "talos.img"
+  overwrite               = false
+  upload_timeout          = 120
 }
 
 resource "proxmox_virtual_environment_vm" "talos_vm" {
-  for_each        = var.nodes
-  name            = format("k8s-control-plane-%s", index(keys(var.nodes), each.key))
+  for_each = var.nodes
+  name = each.value.machine_type == "controlplane" ? format("${var.cluster.env}-control-plane-%s",
+  index(keys(var.nodes), each.key)) : format("${var.cluster.env}-node-%s", index(keys(var.nodes), each.key))
+
   node_name       = each.value.node
   description     = each.value.machine_type == "controlplane" ? "Talos Control Plane" : "Talos Worker"
   tags            = each.value.machine_type == "controlplane" ? ["k8s", "control-plane"] : ["k8s", "worker"]
@@ -106,6 +110,10 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
 
   operating_system {
     type = "l26"
+  }
+
+  lifecycle {
+    ignore_changes = all
   }
 }
 

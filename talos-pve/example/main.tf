@@ -1,6 +1,6 @@
 module "dev-test" {
-  source    = "github.com/alexrf45/lab//talos-pve-flux?ref=talos-pve"
-  pve_nodes = ["cairo"]
+  source    = "./module"
+  pve_nodes = ["cairo", "anubis"]
 
   cluster = {
     name          = "dev"
@@ -14,7 +14,7 @@ module "dev-test" {
       "glibc",
       "iscsi-tools",
       "util-linux-tools",
-      "qemu-guest-agent",
+      "qemu-guest-agent"
     ]
     platform      = "nocloud"
     iso_datastore = "local"
@@ -23,10 +23,11 @@ module "dev-test" {
   nodes = {
     v1 = {
       install_disk     = "/dev/vda"
+      machine_type     = "controlplane"
       node             = "cairo"
       vm_id            = 7000
       datastore_id     = "data"
-      allow_scheduling = optional(bool, true)
+      allow_scheduling = false
       ip               = "10.3.3.60"
       cores            = 2
       memory           = 8092
@@ -35,10 +36,11 @@ module "dev-test" {
     },
     v2 = {
       install_disk     = "/dev/vda"
+      machine_type     = "controlplane"
+      allow_scheduling = true
       node             = "cairo"
       vm_id            = 7001
       datastore_id     = "data"
-      allow_scheduling = optional(bool, true)
       ip               = "10.3.3.61"
       cores            = 2
       memory           = 8092
@@ -46,16 +48,16 @@ module "dev-test" {
 
     },
     v3 = {
-      install_disk     = "/dev/vda"
-      node             = "cairo"
-      vm_id            = 7002
-      datastore_id     = "data"
-      allow_scheduling = optional(bool, true)
-      ip               = "10.3.3.62"
-      cores            = 2
-      memory           = 8092
-      size             = 50
+      install_disk = "/dev/vda"
+      machine_type = "worker"
+      node         = "cairo"
+      vm_id        = 7002
+      datastore_id = "data"
+      ip           = "10.3.3.62"
+      cores        = 2
+      memory       = 8092
+      size         = 50
 
-    }
+    },
   }
 }

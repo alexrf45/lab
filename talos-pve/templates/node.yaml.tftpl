@@ -2,6 +2,9 @@ machine:
   kubelet:
     extraArgs:
       rotate-server-certificates: true
+    nodeIP:
+      validSubnets:
+        - 10.3.3.0/24
   install:
     disk: ${install_disk}
     image: ${install_image}

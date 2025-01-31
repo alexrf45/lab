@@ -23,9 +23,7 @@
 | Name | Type |
 |------|------|
 | [local_sensitive_file.kubeconfig](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
-| [local_sensitive_file.kubeconfig_local](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
 | [local_sensitive_file.talosconfig](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
-| [local_sensitive_file.talosconfig_local](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
 | [proxmox_virtual_environment_download_file.talos_image](https://registry.terraform.io/providers/bpg/proxmox/0.69.0/docs/resources/virtual_environment_download_file) | resource |
 | [proxmox_virtual_environment_role.proxmox-csi](https://registry.terraform.io/providers/bpg/proxmox/0.69.0/docs/resources/virtual_environment_role) | resource |
 | [proxmox_virtual_environment_user.user](https://registry.terraform.io/providers/bpg/proxmox/0.69.0/docs/resources/virtual_environment_user) | resource |
@@ -59,5 +57,6 @@
 | <a name="output_installer_image_iso"></a> [installer\_image\_iso](#output\_installer\_image\_iso) | n/a |
 | <a name="output_kube_config"></a> [kube\_config](#output\_kube\_config) | n/a |
 | <a name="output_machine_config"></a> [machine\_config](#output\_machine\_config) | n/a |
+| <a name="output_pve_token"></a> [pve\_token](#output\_pve\_token) | n/a |
 | <a name="output_schematic_id"></a> [schematic\_id](#output\_schematic\_id) | n/a |
 <!-- END_TF_DOCS -->

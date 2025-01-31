@@ -25,3 +25,8 @@ output "machine_config" {
   value     = data.talos_machine_configuration.this["v1"].machine_configuration
   sensitive = true
 }
+
+output "pve_token" {
+  value     = proxmox_virtual_environment_user_token.user_token.value
+  sensitive = true
+}

@@ -49,14 +49,14 @@ cluster:
         type: Opaque
         metadata:
           name: proxmox-cloud-controller-manager
-          namespace: csi-proxmox
+          namespace: kube-system
         stringData:
           config.yaml: |
             clusters:
               - url: https://${endpoint}:8006/api2/json
-                insecure: false
-                token_id: "kubernetes-csi@pve!ccm"
-                token_secret: "${pve_token}"
+                insecure: true
+                token_id: '${pve_token_id}'
+                token_secret: '${pve_token}'
                 region: "${cluster_name}"
     - name: proxmox-csi-plugin
       contents: |-
@@ -70,9 +70,9 @@ cluster:
           config.yaml: |
             clusters:
               - url: https://${endpoint}:8006/api2/json
-                insecure: false
-                token_id: "kubernetes-csi@pve!csi"
-                token_secret: "${pve_token}"
+                insecure: true
+                token_id: '${pve_token_id}'
+                token_secret: '${pve_token}'
                 region: "${cluster_name}"
 
     externalCloudProvider:

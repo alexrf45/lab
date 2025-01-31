@@ -26,12 +26,13 @@ data "talos_machine_configuration" "this" {
       node_name        = each.value.node
       cluster_name     = var.cluster.name
       endpoint         = var.cluster.pve_endpoint
+      pve_token_id     = proxmox_virtual_environment_user_token.user_token.id
       pve_token        = proxmox_virtual_environment_user_token.user_token.value
     }),
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = each.value.install_disk
       install_image = talos_image_factory_schematic.this.id
-      hostname      = format("%s-node-%s", var.cluster.name, index(keys(var.nodes), each.key))
+      hostname      = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes), each.key))
       node_name     = each.value.node
       cluster_name  = var.cluster.name
     }),
@@ -116,15 +117,6 @@ resource "local_sensitive_file" "kubeconfig" {
   file_permission = "0600"
 }
 
-resource "local_sensitive_file" "kubeconfig_local" {
-  depends_on = [
-    talos_machine_bootstrap.this,
-    time_sleep.wait_until_bootstrap
-  ]
-  content         = talos_cluster_kubeconfig.this.kubeconfig_raw
-  filename        = "$HOME/.kube/config"
-  file_permission = "0600"
-}
 
 resource "local_sensitive_file" "talosconfig" {
   depends_on = [
@@ -135,12 +127,5 @@ resource "local_sensitive_file" "talosconfig" {
   filename = "${path.root}/outputs/talosconfig"
 }
 
-resource "local_sensitive_file" "talosconfig_local" {
-  depends_on = [
-    talos_machine_bootstrap.this,
-    time_sleep.wait_until_bootstrap
-  ]
-  content  = data.talos_client_configuration.this.talos_config
-  filename = "$HOME/.talos/talosconfig"
-}
+
 
