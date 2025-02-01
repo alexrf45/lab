@@ -27,7 +27,7 @@ data "talos_machine_configuration" "this" {
       cluster_name     = var.cluster.name
       endpoint         = var.cluster.pve_endpoint
       pve_token_id     = proxmox_virtual_environment_user_token.user_token.id
-      pve_token        = proxmox_virtual_environment_user_token.user_token.value
+      pve_token        = substr(proxmox_virtual_environment_user_token.user_token.value, 29, 38)
     }),
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = each.value.install_disk

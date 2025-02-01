@@ -49,8 +49,8 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
   index(keys(var.nodes), each.key)) : format("${var.cluster.env}-node-%s", index(keys(var.nodes), each.key))
 
   node_name       = each.value.node
-  description     = each.value.machine_type == "controlplane" ? "Talos Control Plane" : "Talos Worker"
-  tags            = each.value.machine_type == "controlplane" ? ["k8s", "control-plane"] : ["k8s", "worker"]
+  description     = each.value.machine_type == "controlplane" ? "Talos Control Plane Enivornment: ${var.cluster.env}" : "Talos Worker Enivornment: ${var.cluster.env}"
+  tags            = each.value.machine_type == "controlplane" ? ["k8s", "control-plane", "${var.cluster.env}"] : ["k8s", "worker", "${var.cluster.env}"]
   vm_id           = each.value.vm_id
   machine         = "q35"
   scsi_hardware   = "virtio-scsi-single"

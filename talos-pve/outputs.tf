@@ -27,6 +27,6 @@ output "machine_config" {
 }
 
 output "pve_token" {
-  value     = proxmox_virtual_environment_user_token.user_token.value
+  value     = substr(proxmox_virtual_environment_user_token.user_token.value, 29, 38)
   sensitive = true
 }
