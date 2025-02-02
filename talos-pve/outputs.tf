@@ -10,15 +10,6 @@ output "installer_disk_image" {
   value = data.talos_image_factory_urls.this.urls.disk_image
 }
 
-output "controlplane_config" {
-  value     = data.talos_machine_configuration.controlplane.machine_configuration
-  sensitive = true
-}
-#
-output "worker_config" {
-  value     = data.talos_machine_configuration.worker.machine_configuration
-  sensitive = true
-}
 
 output "client_configuration" {
   value     = data.talos_client_configuration.this.talos_config
@@ -30,4 +21,18 @@ output "kube_config" {
   sensitive = true
 }
 
+output "machine_config" {
+  value     = data.talos_machine_configuration.this["v1"].machine_configuration
+  sensitive = true
+}
 
+output "pve_token_id" {
+  value     = proxmox_virtual_environment_user_token.user_token.id
+  sensitive = true
+}
+
+
+output "pve_token" {
+  value     = proxmox_virtual_environment_user_token.user_token.value
+  sensitive = true
+}
