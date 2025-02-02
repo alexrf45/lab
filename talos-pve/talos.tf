@@ -27,7 +27,7 @@ data "talos_machine_configuration" "this" {
       node_name             = each.value.node
       cluster_name          = var.cluster.name
       endpoint              = var.cluster.pve_endpoint
-      pve_token_id          = proxmox_virtual_environment_user_token.user_token.id
+      pve_token_id          = "kubernetes-csi@pve"
       pve_token             = proxmox_virtual_environment_user_token.user_token.value
       cert-manager-manifest = var.cert-manager-manifest
     }),
