@@ -3,14 +3,14 @@ cluster:
     - name: cilium-values
       contents: |
         ---
-      apiVersion: v1
-      kind: ConfigMap
-      metadata:
-        name: cilium-values
-        namespace: kube-system
-      data:
-        values.yaml: |-
-          ${indent(6, cilium_values)}
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: cilium-values
+          namespace: kube-system
+        data:
+          values.yaml: |-
+            ${indent(6, cilium_values)}
     - name: cilium-bootstrap
       contents: |
         ${indent(6, cilium_install)}
