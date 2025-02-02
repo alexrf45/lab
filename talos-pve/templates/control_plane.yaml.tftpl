@@ -41,39 +41,7 @@ cluster:
         kind: Namespace
         metadata:
           name: flux-system
-    - name: proxmox-cloud-controller-manager
-      contents: |-
-        apiVersion: v1
-        kind: Secret
-        type: Opaque
-        metadata:
-          name: proxmox-cloud-controller-manager
-          namespace: kube-system
-        stringData:
-          config.yaml: |
-            clusters:
-              - url: https://${endpoint}:8006/api2/json
-                insecure: true
-                token_id: ${pve_token_id}
-                token_secret: ${pve_token}
-                region: "${cluster_name}"
-    - name: proxmox-csi-plugin
-      contents: |-
-        apiVersion: v1
-        kind: Secret
-        type: Opaque
-        metadata:
-          name: proxmox-csi-plugin
-          namespace: csi-proxmox
-        stringData:
-          config.yaml: |
-            clusters:
-              - url: https://${endpoint}:8006/api2/json
-                insecure: true
-                token_id: ${pve_token_id}
-                token_secret: ${pve_token}
-                region: "${cluster_name}"
-
+ 
   externalCloudProvider:
       enabled: true
       manifests:
