@@ -17,8 +17,7 @@ data "helm_template" "cilium_template" {
 
     enableIPv6Masquerade: false
 
-    enableInternalTrafficPolicy: true
-
+    dnsPolicy: "ClusterFirst"
     encryption:
       enabled: true
       nodeEncryption: true
@@ -84,7 +83,15 @@ data "helm_template" "cilium_template" {
         loadBalancerIP: 10.3.3.81
         name: cilium-ingress
         type: LoadBalancer
-
+    gatewayAPI:
+      enabled: true
+      gatewayClass:
+        create: auto
+    redact:
+      enabled: true
+      http:
+        urlQuery: true
+        userInfo: true
     externalIPs:
       enabled: true
     k8sClientRateLimit:

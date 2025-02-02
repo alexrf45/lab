@@ -4,7 +4,7 @@ cluster:
       cni:
           name: none
       podSubnets:
-          - 10.42.0.0/16
+          - 10.96.0.0/16
       serviceSubnets:
           - 10.43.0.0/16
   proxy:
@@ -44,7 +44,3 @@ cluster:
  
   externalCloudProvider:
       enabled: true
-      manifests:
-          - https://raw.githubusercontent.com/sergelogvinov/proxmox-cloud-controller-manager/main/docs/deploy/cloud-controller-manager.yml
-          - https://raw.githubusercontent.com/sergelogvinov/proxmox-csi-plugin/main/docs/deploy/proxmox-csi-plugin.yml
-
