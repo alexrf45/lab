@@ -35,10 +35,10 @@ variable "nodes" {
     size             = number
   }))
 }
-variable "cilium" {
-  description = "Cilium configuration"
-  type = object({
-    values  = string
-    install = string
-  })
-}
+# variable "cilium" {
+#   description = "Cilium configuration"
+#   type = object({
+#     values  = string
+#     install = string
+#   })
+# }
