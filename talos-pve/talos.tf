@@ -27,7 +27,7 @@ data "talos_machine_configuration" "this" {
       cluster_name     = var.cluster.name
       endpoint         = var.cluster.pve_endpoint
       pve_token_id     = proxmox_virtual_environment_user_token.user_token.id
-      pve_token        = substr(proxmox_virtual_environment_user_token.user_token.value, 29, 38)
+      pve_token        = substr(proxmox_virtual_environment_user_token.user_token.value, 27, 38)
     }),
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = each.value.install_disk
@@ -35,6 +35,10 @@ data "talos_machine_configuration" "this" {
       hostname      = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes), each.key))
       node_name     = each.value.node
       cluster_name  = var.cluster.name
+    }),
+    templatefile("${path.module}/templates/cilium-cni-template.yaml.tftpl", {
+      cilium_values  = data.helm_template.cilium_template.manifest
+      cilium_install = file("${path.module}/manifests/cilium-install.yaml")
     }),
     ] : [
     templatefile("${path.module}/templates/node.yaml.tftpl", {

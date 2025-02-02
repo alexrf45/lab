@@ -1,7 +1,10 @@
 module "dev-test" {
   source    = "./module"
   pve_nodes = ["cairo", "anubis"]
-
+  cilium = {
+    values  = file("${path.module}/manifests/values.yaml")
+    install = file("${path.module}/manifests/cilium-install.yaml")
+  }
   cluster = {
     name          = "dev"
     env           = "dev"
@@ -38,7 +41,7 @@ module "dev-test" {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
       allow_scheduling = true
-      node             = "cairo"
+      node             = "anubis"
       vm_id            = 7001
       datastore_id     = "data"
       ip               = "10.3.3.61"
