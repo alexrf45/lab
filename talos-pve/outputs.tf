@@ -27,7 +27,7 @@ output "machine_config" {
 }
 
 output "pve_token_id" {
-  value     = proxmox_virtual_enviornment_user_token.user_token.id
+  value     = proxmox_virtual_environment_user_token.user_token.id
   sensitive = true
 }
 
