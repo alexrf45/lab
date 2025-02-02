@@ -45,7 +45,7 @@ data "talos_machine_configuration" "this" {
             name = "cilium"
             contents = join("---\n", [
               data.helm_template.cilium_template.manifest,
-              "# Source cilium.tf\n${local.cilium_external_lb_manifest}"
+              "# Source cilium.tf\n${local.cilium_lb_manifest}",
             ])
           }
         ]
