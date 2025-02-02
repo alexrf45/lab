@@ -22,13 +22,14 @@ data "talos_machine_configuration" "this" {
   machine_secrets  = talos_machine_secrets.this.machine_secrets
   config_patches = each.value.machine_type == "controlplane" ? [
     templatefile("${path.module}/templates/control_plane.yaml.tftpl", {
-      hostname         = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes), each.key))
-      allow_scheduling = each.value.allow_scheduling
-      node_name        = each.value.node
-      cluster_name     = var.cluster.name
-      endpoint         = var.cluster.pve_endpoint
-      pve_token_id     = proxmox_virtual_environment_user_token.user_token.id
-      pve_token        = substr(proxmox_virtual_environment_user_token.user_token.value, 27, 38)
+      hostname              = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes), each.key))
+      allow_scheduling      = each.value.allow_scheduling
+      node_name             = each.value.node
+      cluster_name          = var.cluster.name
+      endpoint              = var.cluster.pve_endpoint
+      pve_token_id          = proxmox_virtual_environment_user_token.user_token.id
+      pve_token             = substr(proxmox_virtual_environment_user_token.user_token.value, 27, 38)
+      cert-manager-manifest = var.cert-manager-manifest
     }),
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = each.value.install_disk
