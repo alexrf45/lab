@@ -54,8 +54,8 @@ cluster:
             clusters:
               - url: https://${endpoint}:8006/api2/json
                 insecure: true
-                token_id: '${pve_token_id}'
-                token_secret: '${pve_token}'
+                token_id: ${pve_token_id}
+                token_secret: ${pve_token}
                 region: "${cluster_name}"
     - name: proxmox-csi-plugin
       contents: |-
@@ -70,8 +70,8 @@ cluster:
             clusters:
               - url: https://${endpoint}:8006/api2/json
                 insecure: true
-                token_id: '${pve_token_id}'
-                token_secret: '${pve_token}'
+                token_id: ${pve_token_id}
+                token_secret: ${pve_token}
                 region: "${cluster_name}"
 
   externalCloudProvider:

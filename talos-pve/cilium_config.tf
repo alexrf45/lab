@@ -4,7 +4,7 @@ data "helm_template" "cilium_template" {
   repository = "https://helm.cilium.io/"
 
   chart        = "cilium"
-  version      = "1.16.6"
+  version      = "1.17.0-rc.2"
   kube_version = "1.32.0"
 
   include_crds = true
@@ -12,19 +12,29 @@ data "helm_template" "cilium_template" {
   values = [<<-EOF
     ipam:
       mode: kubernetes
+
     kubeProxyReplacement: true
+
+    enableIPv6Masquerade: false
+
+    enableInternalTrafficPolicy: true
+
+    encryption:
+      enabled: true
+      nodeEncryption: true
+      type: wireguard
+      wireguard:
+        persistentKeepalive: 0s
 
     l2announcements:
       enabled: true
-    l7Proxy: false
 
     securityContext:
-      privileged: true
       capabilities:
         cleanCiliumState:
           - NET_ADMIN
           - SYS_ADMIN
-          - SYS_RESOURCE2
+          - SYS_RESOURCE
         ciliumAgent:
           - CHOWN
           - KILL
@@ -63,8 +73,23 @@ data "helm_template" "cilium_template" {
     k8sServiceHost: localhost
     k8sServicePort: "7445"
 
+    ingressController:
+      default: true
+      enabled: true
+      loadbalancerMode: dedicated
+      service:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-staging
+        externalTrafficPolicy: Cluster
+        loadBalancerIP: 10.3.3.81
+        name: cilium-ingress
+        type: LoadBalancer
+
     externalIPs:
       enabled: true
+    k8sClientRateLimit:
+      qps: 15
+      burst: 20
   EOF
 
   ]
