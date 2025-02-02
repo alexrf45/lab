@@ -30,3 +30,8 @@ output "pve_token" {
   value     = substr(proxmox_virtual_environment_user_token.user_token.value, 29, 38)
   sensitive = true
 }
+
+output "manifest" {
+  value     = data.helm_template.cilium_template.manifest
+  sensitive = true
+}
