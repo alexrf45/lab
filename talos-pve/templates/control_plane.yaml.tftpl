@@ -18,7 +18,7 @@ cluster:
     - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.1.0/config/crd/standard/gateway.networking.k8s.io_referencegrants.yaml
     - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.1.0/config/crd/standard/gateway.networking.k8s.io_grpcroutes.yaml
     - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.1.0/config/crd/experimental/gateway.networking.k8s.io_tlsroutes.yaml
-    - https://github.com/cert-manager/cert-manager/releases/download/v1.16.3/cert-manager.yaml
+    - ${cert-manager-manifest}
   inlineManifests:
     - name: proxmox-csi-plugin-namespace
       contents: |-

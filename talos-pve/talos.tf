@@ -1,3 +1,4 @@
+
 resource "talos_machine_secrets" "this" {
   talos_version = var.cluster.talos_version
 }
@@ -36,8 +37,20 @@ data "talos_machine_configuration" "this" {
       node_name     = each.value.node
       cluster_name  = var.cluster.name
     }),
-    templatefile("${path.module}/templates/cilium-cni-template.yaml.tftpl", {
-      cilium_install = data.helm_template.cilium_template.manifest
+    yamlencode({
+      cluster = {
+        inlineManifests = [
+
+          {
+            name = "cilium"
+            contents = join("---\n", [
+              data.helm_template.cilium_template.manifest,
+              "# Source cilium.tf\n${local.cilium_external_lb_manifest}"
+            ])
+          }
+        ]
+      }
+
     }),
     ] : [
     templatefile("${path.module}/templates/node.yaml.tftpl", {

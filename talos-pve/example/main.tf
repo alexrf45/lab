@@ -1,10 +1,7 @@
 module "dev-test" {
-  source    = "./module"
-  pve_nodes = ["cairo", "anubis"]
-  cilium = {
-    values  = file("${path.module}/manifests/values.yaml")
-    install = file("${path.module}/manifests/cilium-install.yaml")
-  }
+  source                = "./module"
+  pve_nodes             = ["cairo", "anubis"]
+  cert-manager-manifest = "https://github.com/cert-manager/cert-manager/releases/download/v1.16.3/cert-manager.yaml"
   cluster = {
     name          = "dev"
     env           = "dev"
