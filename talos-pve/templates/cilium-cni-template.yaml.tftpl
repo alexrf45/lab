@@ -10,7 +10,7 @@ cluster:
         namespace: kube-system
       data:
         values.yaml: |-
-          ${indent(10, cilium_values)}
+          ${indent(cilium_values)}
     - name: cilium-bootstrap
       contents: |
         ${indent(6, cilium_install)}
