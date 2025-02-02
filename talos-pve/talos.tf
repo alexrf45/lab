@@ -37,8 +37,7 @@ data "talos_machine_configuration" "this" {
       cluster_name  = var.cluster.name
     }),
     templatefile("${path.module}/templates/cilium-cni-template.yaml.tftpl", {
-      cilium_values  = data.helm_template.cilium_template.manifest
-      cilium_install = file("${path.module}/manifests/cilium-install.yaml")
+      cilium_install = data.helm_template.cilium_template.manifest
     }),
     ] : [
     templatefile("${path.module}/templates/node.yaml.tftpl", {
