@@ -1,3 +1,13 @@
+machine:
+  features:
+    kubernetesTalosAPIAccess:
+      enabled: true
+      allowedRoles:
+        - os:reader
+      allowedKubernetesNamespaces:
+        - kube-system
+
+
 cluster:
   allowSchedulingOnControlPlanes: ${allow_scheduling}
   network:
