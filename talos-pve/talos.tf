@@ -35,7 +35,6 @@ data "talos_machine_configuration" "this" {
       hostname      = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes), each.key))
       node_name     = each.value.node
       cluster_name  = var.cluster.name
-      node_label    = "node-role.kubernetes.io/control-plane"
 
     }),
     yamlencode({
@@ -60,7 +59,6 @@ data "talos_machine_configuration" "this" {
       hostname      = format("%s-node-%s", var.cluster.name, index(keys(var.nodes), each.key))
       node_name     = each.value.node
       cluster_name  = var.cluster.name
-      node_label    = "node-role.kubernetes.io/worker"
     })
   ]
 }
