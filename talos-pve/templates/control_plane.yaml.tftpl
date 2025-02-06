@@ -9,11 +9,12 @@ machine:
 
 
 cluster:
-  auditPolicy:
-      apiVersion: audit.k8s.io/v1
-      kind: Policy
-      rules:
-          - level: Metadata
+  apiServer:
+      auditPolicy:
+          apiVersion: audit.k8s.io/v1
+          kind: Policy
+          rules:
+              - level: Metadata
   allowSchedulingOnControlPlanes: ${allow_scheduling}
   network:
       cni:
