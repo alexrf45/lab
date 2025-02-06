@@ -39,12 +39,6 @@ cluster:
           labels:
             pod-security.kubernetes.io/enforce: "privileged"
             app: "csi-proxmox"
-    - name: namespace-external-secrets
-      contents: |-
-        apiVersion: v1
-        kind: Namespace
-        metadata:
-          name: external-secrets
     - name: namespace-flux
       contents: |-
         apiVersion: v1
@@ -54,6 +48,4 @@ cluster:
  
   externalCloudProvider:
       enabled: true
-      manifests:
-        - https://raw.githubusercontent.com/siderolabs/talos-cloud-controller-manager/main/docs/deploy/cloud-controller-manager.yml
 
