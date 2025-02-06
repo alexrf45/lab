@@ -10,6 +10,9 @@ machine:
         - 10.3.3.0/24
     clusterDNS:
         - 10.43.0.10
+    nodeLabels:
+      topology.kubernetes.io/region: ${cluster_name}
+      topology.kubernetes.io/zone: ${node_name}
   install:
     disk: ${install_disk}
     image: ${install_image}
