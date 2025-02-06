@@ -9,6 +9,11 @@ machine:
 
 
 cluster:
+  auditPolicy:
+      apiVersion: audit.k8s.io/v1
+      kind: Policy
+      rules:
+          - level: Metadata
   allowSchedulingOnControlPlanes: ${allow_scheduling}
   network:
       cni:
@@ -48,4 +53,7 @@ cluster:
  
   externalCloudProvider:
       enabled: true
+      manifests:
+        - https://raw.githubusercontent.com/sergelogvinov/proxmox-csi-plugin/main/docs/deploy/proxmox-csi-plugin.yml
+        - https://raw.githubusercontent.com/sergelogvinov/proxmox-cloud-controller-manager/main/docs/deploy/cloud-controller-manager.yml
 

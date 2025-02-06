@@ -1,8 +1,10 @@
 machine:
+  time:
+    servers:
+      - /dev/ptp0
   kubelet:
     extraArgs:
       rotate-server-certificates: true
-      cloud-provider: external
     nodeIP:
       validSubnets:
         - 10.3.3.0/24
@@ -14,6 +16,8 @@ machine:
     extraKernelArgs:
         - console=ttyS1
         - panic=10
+        - cpufreq.default_governor=performance
+        - intel_idle.max_cstate=0
   network:
     hostname: ${hostname}
     nameservers:
