@@ -75,12 +75,12 @@ data "helm_template" "cilium_template" {
     ingressController:
       default: true
       enabled: true
-      loadbalancerMode: dedicated
+      loadbalancerMode: shared
       service:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         externalTrafficPolicy: Cluster
-        loadBalancerIP: 10.3.3.81
+        loadBalancerIP: 10.3.3.70
         name: cilium-ingress
         type: LoadBalancer
     gatewayAPI:
