@@ -25,6 +25,10 @@ resource "proxmox_virtual_environment_download_file" "talos_worker_image" {
 
 
 resource "proxmox_virtual_environment_vm" "talos_vm" {
+  depends_on = [
+    proxmox_virtual_environment_download_file.talos_control_plane_image,
+    proxmox_virtual_environment_download_file.talos_worker_image
+  ]
   for_each = var.nodes
   name     = each.value.machine_type == "controlplane" ? format("${var.cluster.env}-${each.value.node}-control-plane") : format("${var.cluster.env}-${each.value.node}-node")
 
