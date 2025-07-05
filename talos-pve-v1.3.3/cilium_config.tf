@@ -82,7 +82,7 @@ data "helm_template" "this" {
         loadbalancerMode = "shared"
         service = {
           externalTrafficPolicy = "Cluster"
-          loadBalancerIP        = "10.3.3.41"
+          loadBalancerIP        = var.load_balancer_ip
           name                  = "cilium-ingress"
           type                  = "LoadBalancer"
         }

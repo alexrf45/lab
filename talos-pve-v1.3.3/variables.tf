@@ -41,6 +41,11 @@ variable "nodes" {
   }))
 }
 
+variable "load_balancer_ip" {
+  description = "IP address of shared load balancer"
+  type        = string
+}
+
 variable "cilium_version" {
   description = "version of cilium chart to deploy in initial talos config"
   type        = string
