@@ -6,7 +6,7 @@ data "helm_template" "this" {
 
   chart        = "cilium"
   version      = var.cilium_version
-  kube_version = "1.33.0"
+  kube_version = "1.33.2"
 
   include_crds = true
 
@@ -15,7 +15,7 @@ data "helm_template" "this" {
       resources = {
         limits = {
           cpu    = "2000m"
-          memory = "2Gi"
+          memory = "1Gi"
         }
         requests = {
           cpu    = "100m"
@@ -52,17 +52,17 @@ data "helm_template" "this" {
       }
 
       hubble = {
-        enabled           = false
+        enabled           = true
         enableOpenMetrics = false
         metrics = {
           enabled = ["dns:query", "drop", "tcp", "flow", "port-distribution", "icmp", "http"]
         }
         relay = {
-          enabled     = false
+          enabled     = true
           rollOutPods = false
         }
         ui = {
-          enabled = false
+          enabled = true
         }
       }
 
@@ -89,7 +89,7 @@ data "helm_template" "this" {
       }
 
       gatewayAPI = {
-        enabled = false
+        enabled = true
         gatewayClass = {
           create = "auto"
         }
