@@ -29,6 +29,8 @@ data "talos_machine_configuration" "this" {
       cluster_name     = var.cluster.name
       endpoint         = var.cluster.pve_endpoint
       vip_ip           = var.cluster.vip_ip
+      nameserver1      = var.cluster.nameserver1
+      nameserver2      = var.cluster.nameserver2
     }),
     templatefile("${path.module}/templates/patch.yaml.tftpl", {
       tailscale_auth = var.cluster.tailscale_auth
@@ -54,6 +56,8 @@ data "talos_machine_configuration" "this" {
       hostname      = format("%s-%s-node-%s", var.cluster.name, each.value.node, each.value.vm_id)
       node_name     = each.value.node
       cluster_name  = var.cluster.name
+      nameserver1   = var.cluster.nameserver1
+      nameserver2   = var.cluster.nameserver2
     }),
   ]
 }
