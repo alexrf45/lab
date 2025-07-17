@@ -5,7 +5,7 @@ resource "random_uuid" "this" {
 
 
 resource "aws_s3_bucket" "this" {
-  bucket        = "${var.env}-${var.app}-state-${random.this.result}"
+  bucket        = "${var.env}-${var.app}-state-${random_uuid.this.result}"
   force_destroy = var.env == "dev" ? true : false
   tags          = var.resource_tags
 }
