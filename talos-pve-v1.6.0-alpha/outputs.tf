@@ -3,7 +3,7 @@ output "client_configuration" {
   sensitive = true
 }
 
-output "kube_config" {
+output "kubeconfig" {
   value     = talos_cluster_kubeconfig.this.kubeconfig_raw
   sensitive = true
 }
