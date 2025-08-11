@@ -1,13 +1,11 @@
-
 data "helm_template" "this" {
   name       = "cilium"
   namespace  = "networking"
   repository = "https://helm.cilium.io/"
 
   chart        = "cilium"
-  version      = var.cilium_version
-  kube_version = "1.33.2"
-
+  version      = var.cilium_config.cilium_version
+  kube_version = var.cilium_config.kube_version
   include_crds = true
 
   values = [
@@ -50,19 +48,18 @@ data "helm_template" "this" {
           ciliumAgent      = ["CHOWN", "KILL", "NET_ADMIN", "NET_RAW", "IPC_LOCK", "SYS_ADMIN", "SYS_RESOURCE", "DAC_OVERRIDE", "FOWNER", "SETGID", "SETUID"]
         }
       }
-
       hubble = {
-        enabled           = true
+        enabled           = var.cilium_config.hubble_enabled
         enableOpenMetrics = false
         metrics = {
           enabled = ["dns:query", "drop", "tcp", "flow", "port-distribution", "icmp", "http"]
         }
         relay = {
-          enabled     = true
-          rollOutPods = false
+          enabled     = var.cilium_config.relay_enabled
+          rollOutPods = var.cilium_config.relay_pods_rollout
         }
         ui = {
-          enabled = true
+          enabled = var.cilium_config.hubble_ui_enabled
         }
       }
 
@@ -77,19 +74,19 @@ data "helm_template" "this" {
       k8sServicePort = "7445"
 
       ingressController = {
-        default          = true
-        enabled          = true
-        loadbalancerMode = "shared"
+        default          = var.cilium_config.ingress_default_controller
+        enabled          = var.cilium_config.ingress_controller_enabled
+        loadbalancerMode = var.cilium_config.load_balancer_mode
         service = {
           externalTrafficPolicy = "Cluster"
-          loadBalancerIP        = var.load_balancer_ip
+          loadBalancerIP        = var.cilium_config.load_balancer_ip
           name                  = "cilium-ingress"
           type                  = "LoadBalancer"
         }
       }
 
       gatewayAPI = {
-        enabled = true
+        enabled = var.cilium_config.gateway_api_enabled
         gatewayClass = {
           create = "auto"
         }
@@ -114,4 +111,3 @@ data "helm_template" "this" {
     })
   ]
 }
-
