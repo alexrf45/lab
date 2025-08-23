@@ -1,0 +1,5 @@
+bucket = <BUCKET>
+region = "us-west-2"
+dynamodb_table = <TABLE>
+encrypt = true
+key = "state/dev/vps.tfstate" #example. change based on your infra and naming conventions
