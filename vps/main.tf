@@ -63,6 +63,14 @@ resource "hcloud_server" "vps" {
   }
 }
 
+resource "hcloud_volume" "storage" {
+  name      = "dev-vol"
+  size      = 50
+  server_id = hcloud_server.vps.id
+  automount = true
+  format    = "ext4"
+}
+
 resource "hcloud_firewall" "vps_fw" {
   name = "vps-firewall"
   rule {
