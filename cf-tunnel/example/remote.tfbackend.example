@@ -1,0 +1,5 @@
+bucket = "test-bucket"
+region = "us-west-2"
+dynamodb_table = "test-tf-locks"
+encrypt = true
+key = "state/dev/app/test/obj-storage.tfstate"
