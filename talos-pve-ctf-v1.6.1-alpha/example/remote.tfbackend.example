@@ -1,0 +1,5 @@
+bucket = "testing-state"
+region = "us-east-1"
+dynamodb_table = "testing-dynamodb-table-xxxxxxx-xxxxx"
+encrypt = true
+key = "state/test/talos-test-v1.10.6.tfstate"

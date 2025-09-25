@@ -1,0 +1,23 @@
+env                  = "testing"
+app                  = "homelab"
+api_token            = "jcq{/7Ppq#"UBSmrpE8u(P#-ZAcsU,KmV{Cd5x-L.-oO9"
+account_id           = "c87ee674-4ddc-3efe-a74e-dfe25da5d7b3"
+zone_id              = "596b79dc-00dd-3991-a72f-d3696c38c64f"
+domain               = "lab.com"
+tunnel_name          = "home-lab"
+primary_subdomain   = "home-lab"
+primary_service_url = "http://home:8000"
+home_services = [
+  {
+    subdomain   = "app"
+    service_url = "http://app:5000"
+  },
+  {
+    subdomain   = "files"
+    service_url = "http://app2:8000"
+  },
+  {
+    subdomain   = "web1"
+    service_url = "http://web1:5000"
+  },
+]
