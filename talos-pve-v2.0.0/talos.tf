@@ -28,7 +28,7 @@ data "talos_machine_configuration" "this" {
       allow_scheduling = each.value.allow_scheduling
       node_name        = each.value.node
       cluster_name     = var.cluster.name
-      endpoint         = var.pve_config.pve_endpoint
+      endpoint         = var.cluster.endpoint
       vip_ip           = var.cluster.vip_ip
       nameserver1      = var.dns_servers.primary
       nameserver2      = var.dns_servers.secondary
