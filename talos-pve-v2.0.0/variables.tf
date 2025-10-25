@@ -3,17 +3,15 @@ variable "environment" {
   type        = string
   validation {
     condition = anytrue([
+      var.environment == "test",
       var.environment == "dev",
-      var.environment == "staging",
-      var.environment == "production",
-      var.environment == "testing",
-      var.environment == "sandbox",
+      var.environment == "prod",
     ])
-    error_message = "Please use one of the approved environement names: dev, staging, production, testing, sandbox"
+    error_message = "Please use one of the approved environement names: dev, testing, prod"
   }
 }
 
-variable "pve_config" {
+variable "pve_hosts" {
   description = "Proxmox VE configuration options"
   type = object({
     hosts         = list(string)
@@ -23,14 +21,18 @@ variable "pve_config" {
     password      = string
   })
 }
+
 variable "cluster" {
-  description = "Cluster configuration"
+  description = "Talos Linux K8s configuration"
   type = object({
     name                     = string
     endpoint                 = string
     vip_ip                   = string
     talos_version            = string
     install_disk             = string
+    storage_disk             = string
+    storage_disk_1           = string
+    storage_disk_2           = string
     control_plane_extensions = list(string)
     worker_extensions        = list(string)
     platform                 = string
@@ -52,12 +54,13 @@ variable "nodes" {
     ip               = string
     cores            = number
     memory           = number
-    datastore_id     = optional(string, "local-lvm")
+    datastore_id     = string
     storage_id       = string
     size             = number
     storage_size     = number
   }))
 }
+
 variable "dns_servers" {
   description = "DNS servers for the nodes"
   type = object({
@@ -69,9 +72,11 @@ variable "dns_servers" {
     secondary = "8.8.8.8"
   }
 }
+
 variable "cilium_config" {
   description = "Configuration options for bootstrapping cilium"
   type = object({
+    namespace                  = string
     node_network               = string
     kube_version               = string
     cilium_version             = string
@@ -88,6 +93,7 @@ variable "cilium_config" {
     load_balancer_stop         = number
   })
   default = {
+    namespace                  = "networking"
     node_network               = "10.3.3.0/24"
     kube_version               = "1.33.0"
     cilium_version             = "1.17.6"

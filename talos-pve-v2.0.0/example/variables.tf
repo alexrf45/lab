@@ -7,9 +7,8 @@ variable "environment" {
       var.environment == "staging",
       var.environment == "production",
       var.environment == "testing",
-      var.environment == "sandbox",
     ])
-    error_message = "Please use one of the approved environement names: dev, staging, production, testing, sandbox"
+    error_message = "Please use one of the approved environement names: dev, staging, production, testing"
   }
 }
 
@@ -19,6 +18,7 @@ variable "pve_config" {
     hosts         = list(string)
     pve_endpoint  = string
     iso_datastore = string
+    igpu          = optional(bool, false)
     gateway       = string
     password      = string
   })
@@ -31,6 +31,7 @@ variable "cluster" {
     vip_ip                   = string
     talos_version            = string
     install_disk             = string
+    storage_disk             = string
     control_plane_extensions = list(string)
     worker_extensions        = list(string)
     platform                 = string

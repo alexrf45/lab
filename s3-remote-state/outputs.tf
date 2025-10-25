@@ -15,13 +15,3 @@ output "bucket_name" {
   value       = aws_s3_bucket.this.id
   description = "The name of the bucket"
 }
-
-output "dynamodb_table_name" {
-  value       = aws_dynamodb_table.this.name
-  description = "The name of the DynamoDB table"
-}
-
-output "dynamodb_arn" {
-  value       = aws_dynamodb_table.this.arn
-  description = "ARN of dynamodb_table"
-}

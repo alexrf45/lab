@@ -1,22 +1,38 @@
 machine:
+  sysctls:
+    vm.nr_hugepages: "2048"
+  kernel:
+    modules:
+      - name: nvme_tcp
+      - name: vfio_pci
   files:
     - path: /etc/cri/conf.d/20-customization.part
       op: create
       content: |
         [plugins."io.containerd.cri.v1.images"]
           discard_unpacked_layers = false
+        [plugins."io.containerd.cri.v1.runtime"]
+          device_ownership_from_security_context = true
+
   time:
     servers:
-      - /dev/ptp0
+      - time.cloudflare.com
   kubelet:
     extraArgs:
       rotate-server-certificates: true
     clusterDNS:
       - 10.43.0.10
     extraMounts:
-      - destination: /var/data
+      - destination: ${storage_disk_1}
         type: bind
-        source: /var/data
+        source: ${storage_disk_1}
+        options:
+          - rbind
+          - rshared
+          - rw
+      - destination: ${storage_disk_2}
+        type: bind
+        source: ${storage_disk_2}
         options:
           - rbind
           - rshared
@@ -24,7 +40,11 @@ machine:
   disks:
     - device: /dev/vdb
       partitions:
-        - mountpoint: /var/data
+        - mountpoint: ${storage_disk_1}
+    - device: /dev/vdc
+      partitions:
+        - mountpoint: ${storage_disk_2}
+
   install:
     disk: ${install_disk}
     image: ${install_image}
@@ -33,8 +53,12 @@ machine:
       - panic=10
       - cpufreq.default_governor=performance
       - intel_idle.max_cstate=0
+      - disable_ipv6=1
   network:
     hostname: ${hostname}
     nameservers:
       - ${nameserver1}
       - ${nameserver2}
+    interfaces:
+    - interface: eth0
+      dhcp: false
