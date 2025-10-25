@@ -14,12 +14,11 @@ variable "env" {
   type        = string
   validation {
     condition = anytrue([
+      var.env == "test",
       var.env == "dev",
-      var.env == "stage",
       var.env == "prod",
-      var.env == "testing"
     ])
-    error_message = "Please use one of the approved environement names: dev, stage, prod, testing"
+    error_message = "Please use one of the approved environement names: test, dev, prod"
   }
 }
 

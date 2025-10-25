@@ -5,9 +5,10 @@ resource "random_uuid" "this" {
 
 
 resource "aws_s3_bucket" "this" {
-  bucket        = "${var.env}-${var.app}-state-${random_uuid.this.result}"
-  force_destroy = var.env == "dev" ? true : false
-  tags          = var.resource_tags
+  bucket              = "${var.env}-${var.app}-state-${random_uuid.this.result}"
+  force_destroy       = var.env == "dev" ? true : false
+  object_lock_enabled = true
+  tags                = var.resource_tags
 }
 
 resource "aws_s3_bucket_versioning" "this" {
@@ -62,16 +63,4 @@ resource "aws_s3_bucket_public_access_block" "public_access" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 
-}
-
-resource "aws_dynamodb_table" "this" {
-  name         = "${var.env}-${var.app}-dynamodb-table-${random_uuid.this.result}"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-  tags = var.resource_tags
 }
