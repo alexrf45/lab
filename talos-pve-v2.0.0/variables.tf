@@ -15,7 +15,7 @@ variable "pve_hosts" {
   description = "Proxmox VE configuration options"
   type = object({
     hosts         = list(string)
-    pve_endpoint  = string
+    endpoint      = string
     iso_datastore = string
     gateway       = string
     password      = string
