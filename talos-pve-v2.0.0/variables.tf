@@ -11,6 +11,16 @@ variable "environment" {
   }
 }
 
+variable "worker_disk_count" {
+  description = "Number of additional storage disks to attach to worker nodes (1-10)"
+  type        = number
+  default     = 2
+  validation {
+    condition     = var.worker_disk_count >= 1 && var.worker_disk_count <= 10
+    error_message = "Worker storage disk count must be between 1 and 10"
+  }
+}
+
 variable "pve_hosts" {
   description = "Proxmox VE configuration options"
   type = object({
@@ -110,3 +120,5 @@ variable "cilium_config" {
     load_balancer_stop         = 20
   }
 }
+
+

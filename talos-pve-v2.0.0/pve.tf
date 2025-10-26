@@ -71,21 +71,21 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
     discard      = "on"
     size         = each.value.size
   }
-  disk {
-    datastore_id = each.value.storage_id
-    interface    = "virtio1"
-    file_format  = "raw"
-    ssd          = true
-    iothread     = true
-    cache        = "writethrough"
-    discard      = "on"
-    size         = each.value.storage_size
-  }
+  # disk {
+  #   datastore_id = each.value.storage_id
+  #   interface    = "virtio1"
+  #   file_format  = "raw"
+  #   ssd          = true
+  #   iothread     = true
+  #   cache        = "writethrough"
+  #   discard      = "on"
+  #   size         = each.value.storage_size
+  # }
   dynamic "disk" {
-    for_each = each.value.machine_type == "worker" ? [1] : []
+    for_each = range(each.value.machine_type == "worker" ? var.worker_disk_count : 1)
     content {
       datastore_id = each.value.storage_id
-      interface    = "virtio1"
+      interface    = "virtio${disk.value + 1}"
       file_format  = "raw"
       ssd          = true
       iothread     = true
