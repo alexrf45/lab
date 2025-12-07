@@ -30,10 +30,10 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
     proxmox_virtual_environment_download_file.talos_worker_image
   ]
   for_each        = var.nodes
-  name            = each.value.machine_type == "controlplane" ? format("${var.environment}-${var.cluster.name}-cp-${random_id.example[each.key].hex}") : format("${var.environment}-${var.cluster.name}-node-${random_id.example[each.key].hex}")
+  name            = each.value.machine_type == "controlplane" ? format("${var.environment}-${var.cluster.name}-controlplane-${random_id.example[each.key].hex}") : format("${var.environment}-${var.cluster.name}-node-${random_id.example[each.key].hex}")
   node_name       = each.value.node
-  description     = each.value.machine_type == "controlplane" ? "Talos Control Plane" : "Talos Node Enivornment"
-  tags            = each.value.machine_type == "controlplane" ? ["k8s", "cp", "${var.environment}"] : ["k8s", "node", "${var.environment}"]
+  description     = each.value.machine_type == "controlplane" ? "Talos Control Plane" : "Talos Node"
+  tags            = each.value.machine_type == "controlplane" ? ["k8s", "controlplane", "${var.environment}"] : ["k8s", "node", "${var.environment}"]
   machine         = "q35"
   scsi_hardware   = "virtio-scsi-single"
   stop_on_destroy = true
