@@ -1,0 +1,109 @@
+env = "test"
+
+bootstrap_cluster = false
+
+talos = {
+  name         = "abydos"
+  version      = "1.12.0"
+  platform     = "nocloud"
+  install_disk = "/dev/vda"
+  storage_disk = "/var/data"
+  endpoint     = "192.168.20.220"
+  vip_ip       = "192.168.20.219"
+  control_plane_extensions = [
+    "intel-ucode",
+    "glibc",
+    "iscsi-tools",
+    "util-linux-tools",
+    "qemu-guest-agent",
+    "i915"
+  ]
+  worker_extensions = [
+    "intel-ucode",
+    "glibc",
+    "iscsi-tools",
+    "util-linux-tools",
+    "qemu-guest-agent",
+    "i915"
+  ]
+
+}
+
+pve = {
+  hosts         = ["pve01"]
+  endpoint      = "192.168.20.6"
+  iso_datastore = "local"
+  gateway       = "192.168.20.1"
+  password      = ""
+}
+
+nameservers = {
+  primary   = "1.1.1.1"
+  secondary = "10.3.3.1"
+}
+
+controlplane_nodes = {
+  "cp-1" = {
+    node             = "pve01"
+    ip               = "192.168.20.220"
+    cores            = 2
+    memory           = 8192
+    allow_scheduling = true
+    datastore_id     = "local-lvm"
+    storage_id       = "pve01"
+    disk_size        = 50
+    storage_size     = 50
+  }
+}
+
+worker_nodes = {
+  "node-1" = {
+    node         = "pve01"
+    ip           = "192.168.20.221"
+    cores        = 2
+    memory       = 8092
+    datastore_id = "local-lvm"
+    storage_id   = "pve01"
+    disk_size    = 50
+    storage_size = 200
+  }
+  "node-2" = {
+    node         = "pve01"
+    ip           = "192.168.20.222"
+    cores        = 2
+    memory       = 8092
+    datastore_id = "local-lvm"
+    storage_id   = "pve01"
+    disk_size    = 50
+    storage_size = 200
+  }
+  # "node-3" = {
+  #   node         = "pve02"
+  #   ip           = "192.168.20.223"
+  #   cores        = 2
+  #   memory       = 8092
+  #   datastore_id = "local-lvm"
+  #   storage_id   = "pve02"
+  #   disk_size    = 50
+  #   storage_size = 200
+  # }
+
+}
+
+cilium_config = {
+  namespace                  = "networking"
+  kube_version               = "1.35.0"
+  cilium_version             = "1.18.6"
+  hubble_enabled             = true
+  hubble_ui_enabled          = true
+  relay_enabled              = true
+  relay_pods_rollout         = true
+  ingress_controller_enabled = false
+  ingress_default_controller = false
+  gateway_api_enabled        = true
+  load_balancer_mode         = "shared"
+  load_balancer_start        = 224
+  load_balancer_stop         = 230
+  load_balancer_ip           = "192.168.20.224"
+  node_network               = "192.168.20.0/24"
+}
