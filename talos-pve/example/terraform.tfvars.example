@@ -1,0 +1,150 @@
+# terraform.tfvars.example - Example configuration for talos-pve v3.1.0
+
+env               = "test"
+bootstrap_cluster = true
+
+talos = {
+  name     = "abydos"
+  endpoint = "10.3.3.120"
+  vip_ip   = "10.3.3.119"
+  version  = "v1.10.6"
+  platform = "nocloud"
+  control_plane_extensions = [
+    "intel-ucode",
+    "glibc",
+    "iscsi-tools",
+    "util-linux-tools",
+    "qemu-guest-agent",
+    "i915",
+    "tailscale"
+  ]
+  worker_extensions = [
+    "intel-ucode",
+    "glibc",
+    "iscsi-tools",
+    "util-linux-tools",
+    "qemu-guest-agent",
+    "i915"
+  ]
+}
+
+pve = {
+  hosts    = ["home-0", "home-1", "home-2", "home-3", "home-4", "home-5"]
+  endpoint = "10.3.3.2"
+  gateway  = "10.3.3.1"
+  password = "" # Set via TF_VAR_pve or .env
+}
+
+nameservers = {
+  primary   = "1.1.1.1"
+  secondary = "8.8.8.8"
+}
+
+controlplane_nodes = {
+  "1" = {
+    node             = "home-0"
+    ip               = "10.3.3.120"
+    allow_scheduling = false
+    storage_id       = "data"
+    cores            = 2
+    memory           = 8192
+    disk_size        = 50
+    storage_size     = 50
+  }
+  "2" = {
+    node             = "home-1"
+    ip               = "10.3.3.121"
+    allow_scheduling = false
+    storage_id       = "data"
+    cores            = 2
+    memory           = 8192
+    disk_size        = 50
+    storage_size     = 100
+  }
+  "3" = {
+    node             = "home-2"
+    ip               = "10.3.3.122"
+    allow_scheduling = false
+    storage_id       = "data"
+    cores            = 2
+    memory           = 8192
+    disk_size        = 50
+    storage_size     = 100
+  }
+}
+
+worker_nodes = {
+  "4" = {
+    node         = "home-3"
+    ip           = "10.3.3.123"
+    storage_id   = "data"
+    cores        = 2
+    memory       = 8092
+    disk_size    = 50
+    storage_size = 100
+  }
+  "5" = {
+    node         = "home-4"
+    ip           = "10.3.3.124"
+    storage_id   = "data"
+    cores        = 2
+    memory       = 8092
+    disk_size    = 50
+    storage_size = 100
+  }
+  "6" = {
+    node         = "home-5"
+    ip           = "10.3.3.125"
+    storage_id   = "data"
+    cores        = 2
+    memory       = 8092
+    disk_size    = 50
+    storage_size = 200
+  }
+}
+
+cilium_config = {
+  node_network               = "10.3.3.0/24"
+  kube_version               = "1.33.0"
+  cilium_version             = "1.18.0"
+  hubble_enabled             = false
+  hubble_ui_enabled          = false
+  relay_enabled              = false
+  relay_pods_rollout         = false
+  ingress_controller_enabled = true
+  ingress_default_controller = true
+  gateway_api_enabled        = true
+  load_balancer_mode         = "shared"
+  load_balancer_ip           = "10.3.3.200"
+  load_balancer_start        = 200
+  load_balancer_stop         = 215
+}
+
+# v3.1.0 - Config export
+config_export = {
+  enabled          = true
+  kubeconfig_path  = "~/.kube/environments/test"
+  talosconfig_path = "~/.talos/test"
+}
+
+# v3.1.0 - Worker labels (defaults are usually fine)
+worker_labels = {
+  enabled = true
+  labels = {
+    "node-role.kubernetes.io/worker" = "true"
+    "node"                           = "worker"
+  }
+}
+
+# v3.1.0 - Flux GitOps bootstrap
+flux_config = {
+  enabled              = true
+  git_url              = "ssh://git@github.com/alexrf45/home-ops.git"
+  cluster_path         = "clusters/abydos"
+  branch               = "main"
+  ssh_private_key_path = "~/.ssh/fr3d"
+  cluster_domain       = "cluster.local"
+  sops_age_key_path    = "~/.local/flux-staging.agekey"
+  sops_secret_name     = "sops-age"
+  sops_age_key_name    = "flux-staging.agekey"
+}
